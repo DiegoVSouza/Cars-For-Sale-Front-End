@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../services/api';
-import { Product, Stock } from '../types';
+import { Cars, Stock } from '../types';
 
 interface CartProviderProps {
   children: ReactNode;
@@ -13,7 +13,7 @@ interface UpdateProductAmount {
 }
 
 interface CartContextData {
-  cart: Product[];
+  cart: Cars[];
   addProduct: (productId: number) => Promise<void>;
   removeProduct: (productId: number) => void;
   updateProductAmount: ({ productId, amount }: UpdateProductAmount) => void;
@@ -23,7 +23,7 @@ const CartContext = createContext<CartContextData>({} as CartContextData);
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
   
-  const [cart, setCart] = useState<Product[]>(() => {
+  const [cart, setCart] = useState<Cars[]>(() => {
     const storagedCart = localStorage.getItem('@ecommerce:cart')
 
     if (storagedCart) {
@@ -49,7 +49,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         localStorage.setItem('@ecommerce:cart', JSON.stringify(updateCart));
         return
       };
-      const {data} = await api.get<Product>(`products/${productId}`);
+      const {data} = await api.get<Cars>(`products/${productId}`);
       const addNewProductToCart = [...cart,{...data, amount: 1}]
       setCart(addNewProductToCart)
       localStorage.setItem('@ecommerce:cart', JSON.stringify(addNewProductToCart));
@@ -88,7 +88,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       if(amount > stock.amount){
         throw new Error('Quantidade no estoque insuficiente');
       }else{
-        const {data} = await api.get<Product>(`products/${productId}`);
+        const {data} = await api.get<Cars>(`products/${productId}`);
         
         const filter = cart.filter(product => product.id !== productId)
         

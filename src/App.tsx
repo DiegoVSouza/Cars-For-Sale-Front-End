@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import Routes from './routes';
 import GlobalStyles from './styles/global';
-import Header from './components/Header';
+
 import { CartProvider } from './hooks/useCart';
 import { LoginProvider } from './hooks/useLogin';
 
@@ -14,7 +14,6 @@ const App = (): JSX.Element => {
     <LoginProvider>
         <CartProvider>
           <GlobalStyles />
-          <Header />
           <Routes />
           <ToastContainer autoClose={3000} />
         </CartProvider>

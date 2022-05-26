@@ -1,39 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IoBagHandle, IoImagesSharp, IoPersonCircle } from 'react-icons/io5';
+import { IoPersonCircle } from 'react-icons/io5';
 
 
-import logo from '../../assets/images/logo.svg';
-import { Container, Cart, Nav } from './styles';
-import { useCart } from '../../hooks/useCart';
+import { Container } from './styles';
+
 import { useLogin } from '../../hooks/useLogin';
 
+import ProfileImg from '../../assets/images/ProfileImg.svg' 
+import LogoImg from '../../assets/images/logo.svg'
+
 const Header = (): JSX.Element => {
-  const {cart} = useCart()
-  const { isLogged, userName } = useLogin()
-  const cartSize = cart.length
+
+  const { isLogged } = useLogin()
 
   function Guest(){
     return(
       <div className='account'>
-        <Link to='/login'>
-          <IoPersonCircle size={36} color='#101010'/>
-        </Link>
+        
         <div>
           <Link to='/login'><strong>Entrar</strong></Link>
           <Link to='/createaccount'><label>Criar Conta</label></Link>
         </div>
+        <Link to='/login'>
+          <IoPersonCircle size={36} color='#101010'/>
+        </Link>
       </div>
     )
   }
   function User(){
     return(
       <div className='account'>
-          <IoImagesSharp size={36} color='#101010'/>
-
-        <div>
-          <strong>Bem vindo {userName}</strong>
-        </div>
+        <strong>Bem vindo</strong>
+        <img src={ProfileImg} alt="Imagem de Perfil" />
       </div>
     )
   }
@@ -48,32 +47,18 @@ const Header = (): JSX.Element => {
 
   return (
     <Container>
+      <article>
+        <img src={LogoImg} alt="" />
+          <div>
+            <ul>
+              <Link to={'/'}><li>Comprar</li></Link>
+              <Link to={'/'}><li>Vender</li></Link>
+            </ul>
+          </div>
 
-      {Account()}
+          {Account()}
 
-      <Link to="/">
-        <div className='home'>
-          <strong>Geek Store</strong>
-          <img src={logo} alt="GeekStore" />
-        </div>
-      </Link>
-
-      <Cart to="/cart">
-        <div>
-          <strong>Meu carrinho</strong>
-          <span data-testid="cart-size">
-            {cartSize === 1 ? `${cartSize} item` : `${cartSize} itens`}
-          </span>
-        </div>
-        <IoBagHandle size={36} color='#101010' />
-      </Cart>
-      <Nav>
-        <div>
-        <Link to='/actionFigures'><li>Action Figures</li></Link>
-        <Link to='/manga'><li>Manga</li></Link>
-        <Link to='/accessories'><li>Acessórios</li></Link>
-        </div>  
-      </Nav>
+        </article>
     </Container>
   );
 };

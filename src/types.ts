@@ -1,8 +1,8 @@
-export interface Product {
+export interface Cars{
   id: number;
   title: string;
-  price: number;
   image: string;
+  price: number;
   amount: number;
 }
 
@@ -11,16 +11,8 @@ export interface Stock {
   amount: number;
 }
 
-export interface Banner{
-  id: number;
-  title: string;
-  link: string;
-  image: string;
-}
-
 export interface Account{
   id: number;
-  name: string;
   email: string;
   password: string;
 }

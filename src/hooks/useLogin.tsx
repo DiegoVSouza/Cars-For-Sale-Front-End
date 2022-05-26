@@ -15,48 +15,49 @@ interface LoginProviderProps {
 
   interface LoginContextData {
     isLogged: Boolean;
-    userName: String;
-    LoginAccount: ({email,password}: LoginAccount) => Promise<void>;
+    currentUser: Account;
+    LoginAccount: (id: number) => Promise<void>;
   }
 
   const LoginContext = createContext<LoginContextData>({} as LoginContextData);
 
 export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
 
-    const [isLogged, setIsLogged] = useState<Boolean>(false)
-    const [userName, setUserName] = useState<String>('')
+    const [isLogged, setIsLogged] = useState(false)
+    const [currentUser, setCurrentUser] = useState<Account>(() => {
+        const storageUser = localStorage.getItem('@ecommerce:user')
+    
+        if (storageUser) {
+          return JSON.parse(storageUser);
+        }
+    
+        return;
+      });
 
     const history = useHistory();
 
     function concluded(){
-        history.push('/')
+        history.push('/home')
     }
 
-    async function LoginAccount({email, password}: LoginAccount){
+    async function LoginAccount(id: number){
 
-        const {data: accounts} = await api.get<Account[]>('/accounts')
-        const findEmail = accounts.find(account=> account.email === email)
-
-        console.log(findEmail)
-        if(findEmail){
-            if(findEmail.password === password){
-                setUserName(findEmail.name)
-                setIsLogged(true)
-
-                toast.success('Logado com sucesso')
-
-                concluded();
-                return;
-
-            }else{ toast.error('Senha incorreta')}
-        }else{ toast.error('Email não cadastrado')}
+       
+        const {data: user} = await api.get<Account>(`/accounts/${id}`)
+        if(user){
+            setCurrentUser(user)
+            localStorage.setItem('@ecommerce:user', JSON.stringify(user));
+            console.log(user)
+            setIsLogged(true)
+            concluded()
+        }
         
-    
+        
     }
 
     return(
         <LoginContext.Provider
-            value={{isLogged, userName, LoginAccount}}
+            value={{isLogged, currentUser, LoginAccount}}
         >
             {children}
         </LoginContext.Provider>
