@@ -8,26 +8,60 @@ export default createGlobalStyle`
     padding: 0;
     outline: 0;
     box-sizing: border-box;
+
+    &::-webkit-scrollbar{
+        width: 5px;
+        background: var(--gray--medium);
+        
+       
+        
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: var(--blue);
+        border-radius: 10px;
+        max-height: 200px;
+    }
     
  
   }
 
   :root{
-    --background: #474747;
-    --gray: #4d4d4d;
+    --background: #151418;
+    --black: #0a0a0a;
+    --gray-medium: #b3b3b3; 
+    --gray-bold: #7a7979;
+    --gray: #504f4f;
     --white: #fff8f8;
     --blue: #625ffa;
   }
 
+  @media (max-width: 1080px){
+    html{
+        font-size: 93.75%;
+    }
+  }
+  @media (max-width: 720){
+      html{
+          font-size: 87.5%;
+      }
+  }
   body {
     background: var(--background);
     -webkit-font-smoothing: antialiased;
     
   }
 
-  body, input, button {
-    font: 14px Roboto, sans-serif;
+  a{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
   }
+
+  body, input, textarea, select, button{
+    font: 400 1rem "Roboto", sans-serif;
+    border: 0;
+}
 
   #root {
     
@@ -37,6 +71,39 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .react-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .react-modal-content {
+    position: relative;
+    padding: 3rem;
+    width: 100%;
+    max-width: 576px;
+    background: var(--background);
+    border-radius: 0.25rem;
+  }
+  .react-modal-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: transparent;
+    border: 0;
+    transition: filter 0.2s ease-in-out;
+    
+    &:hover {
+      filter: brightness(0.8);
+    }
   }
 `;
 

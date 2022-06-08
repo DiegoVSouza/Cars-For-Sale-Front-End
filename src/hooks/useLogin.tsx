@@ -8,15 +8,11 @@ interface LoginProviderProps {
     children: ReactNode;
   }
 
-  interface LoginAccount{
-      email: string;
-      password: string;
-  }
-
   interface LoginContextData {
     isLogged: Boolean;
     currentUser: Account;
     LoginAccount: (id: number) => Promise<void>;
+    LoggoutAccount: () => void;
   }
 
   const LoginContext = createContext<LoginContextData>({} as LoginContextData);
@@ -25,8 +21,9 @@ export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
 
     const [isLogged, setIsLogged] = useState(false)
     const [currentUser, setCurrentUser] = useState<Account>(() => {
+
         const storageUser = localStorage.getItem('@ecommerce:user')
-    
+
         if (storageUser) {
           return JSON.parse(storageUser);
         }
@@ -42,22 +39,30 @@ export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
 
     async function LoginAccount(id: number){
 
-       
         const {data: user} = await api.get<Account>(`/accounts/${id}`)
         if(user){
             setCurrentUser(user)
             localStorage.setItem('@ecommerce:user', JSON.stringify(user));
-            console.log(user)
             setIsLogged(true)
             concluded()
-        }
+        }       
+    }
+
+    function LoggoutAccount(){
+        setCurrentUser({
+            id: 0,
+            name: '',
+            email: '',
+            password: ''})
         
-        
+        localStorage.setItem('@ecommerce:user', '')
+        setIsLogged(false)
+
     }
 
     return(
         <LoginContext.Provider
-            value={{isLogged, currentUser, LoginAccount}}
+            value={{isLogged, currentUser, LoginAccount, LoggoutAccount}}
         >
             {children}
         </LoginContext.Provider>

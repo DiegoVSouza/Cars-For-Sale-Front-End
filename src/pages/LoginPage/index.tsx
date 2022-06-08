@@ -4,6 +4,9 @@ import LogoImg from '../../assets/images/logo.svg'
 import BtnGoogleImg from '../../assets/images/BTNGoogle.svg'
 import BtnFacebookImg from '../../assets/images/BTNFacebook.svg'
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+
 import { Card, Container, Form, LinkAccounts } from './styles';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +22,11 @@ type Inputs = {
     password: string,
   };
 
+  const schema = yup.object({
+    email: yup.string().email('Informe um email valido').required('Informe um email valido'),
+    password: yup.string().min(8,'a senha deve conter 8 caracteres').required('a'),
+}).required();
+
 
 const LoginPage = (): JSX.Element=>{
 
@@ -26,10 +34,11 @@ const LoginPage = (): JSX.Element=>{
         return <></>
     })
 
-
     const {LoginAccount} = useLogin() 
 
-    const { register, handleSubmit, watch, formState: { errors }, reset, } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors }, } = useForm<Inputs>({
+        resolver: yupResolver(schema)
+      });
 
     const onSubmit: SubmitHandler<Inputs> = async data => {
 
@@ -113,17 +122,9 @@ const LoginPage = (): JSX.Element=>{
                         <input
                             style={formStyleEmail}
                             id="email"
-                            {...register("email", {
-                            required: "Insira seu email",
-                
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: "Adicione um endereço de email valido"
-                            }
-                            })}
-                            type="email"
+                            {...register("email")}
                         />
-                        {errors.email && <p>{errors.email.message}</p>}
+                        <p>{errors.email?.message}</p>
                         
                         <label>Senha</label>
                         <div>
@@ -132,18 +133,11 @@ const LoginPage = (): JSX.Element=>{
                             </div>
                             <input
                                 style={formStylePassword}
-                                id="password"
-                                    {...register("password", {
-                                    required: "Insira sua senha",
-                                    minLength: {
-                                        value: 5,
-                                        message: "A senha deve ter no minino 5 caracteres"
-                                    },
-                                    })}
-                                    type={showPassword}
+                                type={showPassword}
+                                    {...register("password")}
                                 />
                         </div>
-                        {errors.password && <p>{errors.password.message}</p>}
+                        <p>{errors.password?.message}</p>
 
                         <label className='fogotPassword'> <Link to={'/'}>Esqueci minha senha </Link> </label>
                         <input type="submit" value="Entrar" />
@@ -160,7 +154,7 @@ const LoginPage = (): JSX.Element=>{
                         <Link to={'/'}><img src={BtnFacebookImg} alt="" /></Link>
                     </section>
                     
-                    <footer>Não é registrado? <Link to={'createaccount'}>Crie uma conta</Link></footer>
+                    <footer><span>Não é registrado?</span> <Link to={'createaccount'}>Crie uma conta</Link></footer>
                 </LinkAccounts>
             </Card>
         </Container>

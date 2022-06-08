@@ -1,38 +1,110 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { IoPersonCircle } from 'react-icons/io5';
+import { useParams } from 'react-router-dom';
+
+import { FiSearch, FiUser, FiX } from 'react-icons/fi';
 
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
 
 import { useLogin } from '../../hooks/useLogin';
 
 import ProfileImg from '../../assets/images/ProfileImg.svg' 
 import LogoImg from '../../assets/images/logo.svg'
+import SearchIpunt from '../SearchInput';
+
+interface headerProps{
+  product: string;
+}
 
 const Header = (): JSX.Element => {
 
-  const { isLogged } = useLogin()
+  
+  const [category, setCategory] = useState('sedan')
+
+  const [text, setText] = useState('');
+
+  const [classHome, setClassHome ] = useState('active')
+  const [classSale, setClassSale ] = useState('')
+  const [overlayIsOpen, setOverlayIsOpen] = useState(false)
+  const [overlayOpen, setOverlayOpen] = useState({})
+  const [overlayClose, setOverlayClose] = useState({})
+
+  const [searchBar, setSearchBar] = useState('close')
+  const [disabled, setdisabled] = useState(true)
+
+  const { isLogged, LoggoutAccount, currentUser } = useLogin()
+
+
+  
+  useEffect(()=>{
+    function overLay(){
+      if(overlayIsOpen){
+        setOverlayClose({
+          display: 'inline-block'
+        })
+        setOverlayOpen({
+          display: 'flex'
+        })
+      }
+      else{
+        setOverlayClose({
+          display: 'none'
+        })
+        setOverlayOpen({
+          display: 'none'
+        })
+      }
+    }
+    
+    overLay()
+  },[overlayIsOpen])
+
+  useEffect(()=>{
+    function disableSearch(){
+      if(searchBar === 'open'){
+        
+        setdisabled(false)
+      }
+      else{
+        setdisabled(true)
+        setText('')
+      }
+    }
+    
+    disableSearch()
+  },[searchBar])
+  
+
+  function searchIcon(){
+    if(searchBar === 'open'){
+      
+      return <FiX className={searchBar} onClick={()=>setSearchBar('close')}/>
+    }else{
+      
+      return <FiSearch className={searchBar} onClick={()=>setSearchBar('open')}/>
+    }
+  }
+
+  
+  
 
   function Guest(){
     return(
-      <div className='account'>
-        
-        <div>
-          <Link to='/login'><strong>Entrar</strong></Link>
-          <Link to='/createaccount'><label>Criar Conta</label></Link>
+      <article>
+      <FiUser size={32} color='#ffffff' onClick={()=>setOverlayIsOpen(true)}/>
+        <div style={overlayOpen}>
+            <Link to='/login'><button id='singInButton'>Entrar</button></Link>
+            <Link to='/createaccount'><button>Criar Conta</button></Link>
         </div>
-        <Link to='/login'>
-          <IoPersonCircle size={36} color='#101010'/>
-        </Link>
-      </div>
+      </article>
     )
   }
   function User(){
     return(
-      <div className='account'>
-        <strong>Bem vindo</strong>
-        <img src={ProfileImg} alt="Imagem de Perfil" />
+      <div>
+        <strong>Bem vindo {currentUser.name}</strong>
+        <button onClick={() => LoggoutAccount()}>Loggout</button>
       </div>
     )
   }
@@ -45,22 +117,34 @@ const Header = (): JSX.Element => {
     return <User/>
   }
 
+
+
   return (
     <Container>
-      <article>
-        <img src={LogoImg} alt="" />
-          <div>
-            <ul>
-              <Link to={'/'}><li>Comprar</li></Link>
-              <Link to={'/'}><li>Vender</li></Link>
-            </ul>
-          </div>
-
-          {Account()}
-
-        </article>
+      <div style={overlayClose} onClick={()=>setOverlayIsOpen(false)}></div>
+      <Content>
+        <Link to="/home"><img src={LogoImg} alt="Imagem da Logo" /></Link>
+          
+            <nav>
+              <a className={ window.location.pathname === '/' ? 'active' : ''} href='/'>Comprar</a>
+              <a className={ window.location.pathname === '/mycars' ? 'active' : ''} href='/mycars'>Vender</a>
+            </nav>
+            <div>
+              {searchIcon()}
+              <input className={searchBar} type="text" disabled={disabled} value={text} onChange={(e) => setText(e.target.value)} 
+              placeholder='Oque você está procurando?'/>
+              <SearchIpunt text={text} category={category}/>
+            </div>
+          
+            {Account()}
+            
+        </Content>
     </Container>
   );
 };
 
 export default Header;
+function useRouter() {
+  throw new Error('Function not implemented.');
+}
+

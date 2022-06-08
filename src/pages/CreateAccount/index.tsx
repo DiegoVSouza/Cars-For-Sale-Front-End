@@ -6,31 +6,40 @@ import { Card, Container, Form, LinkAccounts } from './styles';
 
 import { Link, useHistory } from 'react-router-dom';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+
 import LogoImg from '../../assets/images/logo.svg'
 import BtnGoogleImg from '../../assets/images/BTNGoogle.svg'
 import BtnFacebookImg from '../../assets/images/BTNFacebook.svg'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useForm, SubmitHandler  } from 'react-hook-form';
-import { ErrorMessage } from "@hookform/error-message";
+
 
 
 type Inputs = {
+    name: string;
     email: string,
     password: string,
     confirmPassword: string,
   };
 
+  
+  const schema = yup.object({
+    name: yup.string().required('Informe seu nome'),
+    email: yup.string().email('Informe um email valido').required('Informe um email valido'),
+    password: yup.string().min(8,'a senha deve conter 8 caracteres').required('Digite uma senha'),
+    confirmPassword: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("password")],'As senhas devem ser iguais')
+}).required();
+
 const CreateAccount = (): JSX.Element=>{
 
     const history = useHistory()
     
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [id, setId] = useState(0)
-    const [formStyle, setFormStyle] = useState({})
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+        resolver: yupResolver(schema)});
 
     useEffect(()=>{
          function changeId(){
@@ -42,7 +51,7 @@ const CreateAccount = (): JSX.Element=>{
     
     const onSubmit: SubmitHandler<Inputs> = data => {
             
-            api.post<Account>('accounts',{id:id,email: data.email, password: data.password})
+            api.post<Account>('accounts',{id:id, name: data.name, email: data.email, password: data.password}) 
             
             concluded()
     };
@@ -87,49 +96,30 @@ const CreateAccount = (): JSX.Element=>{
                     <img src={LogoImg} alt="Logo" />
                     <h2>Cadastre-se</h2>
                     <form onSubmit = { handleSubmit(onSubmit) }>
-                        <label>E-mail</label>
+                        <label>Seu nome</label>
+                        <input type='text' {...register("name")}/>
+                        <p>{errors.name?.message}</p>
 
-                        <input style={formStyle} {...register("email", { required: "Digite seu email", 
-                            validate: async value =>{
-                                const {data:accounts} = await api.get<Account[]>('accounts')
-                                const find = accounts.find(account => account.email === value)
-                                if(find){
-                                    return "Email já cadastrado"
-                                }
-                            },
-                            pattern: {
-                                value: /\S+@\S+\.\S+/,
-                                message: "Adicione um endereço de email valido"
-                            }
-                        } )} />
-                        {errors.email && <p>{errors.email.message}</p>}
+                        <label>E-mail</label>
+                        <input type='text' {...register("email")}/>
+                        <p>{errors.email?.message}</p>
 
                         <label>Senha</label>
                         <div>
                             <div onClick={showPassord}>
                                 {visibleIcon()}
                             </div>
-                            <input type={showPassword} {...register("password", { required: "Defina a senha",
-                            minLength: {
-                            value: 8,
-                            message: "A senha precisa de no minimo 8 caracteres"
-                          } })} />
+                            <input type={showPassword} {...register("password")} />
                         </div>
-                        {errors.password && <p>{errors.password.message}</p>}
+                        <p>{errors.password?.message}</p>
                         <label>Confirmar Senha</label>
                         <div>
                             <div onClick={showPassord}>
                                 {visibleIcon()}
                             </div>
-                            <input type={showPassword} {...register("confirmPassword", { required: "Digite sua senha novamente" ,
-                                       validate: (value: string) => {
-                                           if(watch('password') != value){
-                                               return "As senhas devem ser iguais"
-                                           }
-                                       }
-                             })} />
+                            <input type={showPassword} {...register("confirmPassword")} />
                         </div>
-                        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+                        <p>{errors.confirmPassword?.message}</p>
                              
                         <input type="submit" value="Criar Conta" />
                     </form>
@@ -147,7 +137,7 @@ const CreateAccount = (): JSX.Element=>{
                     <Link to={'/'}><img src={BtnFacebookImg} alt="" /></Link>
                 </section>
                 
-                <footer>Já é registrado? <Link to={'login'}>Ir para Login</Link></footer>
+                <footer><span>Já é registrado?</span> <Link to={'login'}>Ir para Login</Link></footer>
             </LinkAccounts>
             </Card>
         </Container>

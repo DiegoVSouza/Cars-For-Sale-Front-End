@@ -1,9 +1,11 @@
 export interface Cars{
   id: number;
-  title: string;
+  name: string;
+  collection: string;
+  year: number;
   image: string;
   price: number;
-  amount: number;
+  category: string;
 }
 
 export interface Stock {
@@ -13,6 +15,7 @@ export interface Stock {
 
 export interface Account{
   id: number;
+  name: string;
   email: string;
   password: string;
 }

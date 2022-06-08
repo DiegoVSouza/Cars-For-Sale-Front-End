@@ -1,57 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
 
-import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
-import { BsCartPlus } from "react-icons/bs";
-
-import { api } from '../../services/api';
-import { useCart } from '../../hooks/useCart';
-import { Link } from 'react-router-dom';
 
 import Header from '../../components/Header'
-import DashBoard from '../../components/DashBoard'
-
-import ProfileImg from '../../assets/images/ProfileImg.svg' 
-import LogoImg from '../../assets/images/logo.svg'
+import Product from '../../components/Products';
+import { Cars } from '../../components/Products/styles';
 
 
-interface Product {
+import coverCarImg from '../../assets/images/cars/homeCover.png'
+
+import { ReactComponent as VolkswagenIcon } from '../../assets/images/carIcons/volkswagenIcon.svg'
+import { ReactComponent as HondaIcon } from '../../assets/images/carIcons/hondaIcon.svg'
+import { ReactComponent as RenaultIcon } from '../../assets/images/carIcons/renaultIcon.svg'
+import { ReactComponent as JeepIcon } from '../../assets/images/carIcons/jeepIcon.svg'
+
+
+
+interface Cars{
   id: number;
   title: string;
-  price: number;
+  collection: string;
+  year: number;
   image: string;
-}
+  price: number;
+  amount: number;
+  category: string;
+  }
 
-interface ProductFormatted extends Product {
-  priceFormatted: string;
-}
-
-interface CartItemsAmount {
-  [key: number]: number;
+interface CarsFormatted extends Cars{
+    priceFormatted: string;
 }
 
 const Home = (): JSX.Element => {
 
-  const {addProduct,cart} = useCart()
-
-  // useEffect(() => {
-  //   async function loadProducts() {
-  //     const banners = await api.get('banners')
-  //     setBanners(banners.data)
-  //     const point = document.querySelectorAll('.points li')
-  //     point[idx].classList.add('on')
-  //   }
-
-  //   loadProducts();
-  // }, []);
-  
 
   return (
     <Container>
       <Header/>
+      <Content>
+        <div>
+          <label>Bem vindo!👋</label>
+          <h2>Encontre aqui seu proximo<br/></h2>
+          <h1><span>parceiro</span> de viagens</h1>
 
-        <DashBoard/>
+          <div>
+            <VolkswagenIcon/>
+            <HondaIcon/>
+            <RenaultIcon/>
+            <JeepIcon/>
+            
+          </div>
+        </div>
+
+        <img src={coverCarImg} alt="cover Img" />
+      </Content>
+      
+      <Product product='sedan'/>
 
     </Container>
   );

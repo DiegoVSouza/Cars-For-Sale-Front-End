@@ -11,12 +11,11 @@ export const Container = styled.main`
 export const Card = styled.main`
     width: 30%;
     height: 100%;
-    background: white;
+    border: solid 2px var(--gray);
     border-radius: 10px;
 
     margin-top: 2rem;
 
-    box-shadow: 0 0 10px 5px ${darken(0.1, '#474747')};
     
 `
 
@@ -25,6 +24,8 @@ export const Form = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    color: var(--white);
+    font-weight: 400;
     
     h2{
         font-size: 1.5rem;
@@ -53,17 +54,16 @@ export const Form = styled.div`
         width: 90%;
         
         label{
-            color: var(--black);
+
             font-weight: bold;
             margin-bottom: 0.5rem;
 
             &:last-of-type{
                 align-self: center;
-                color: black;
                 margin-top: 1rem;
                 font-size: 0.75rem;
                 a{
-                    color: black
+                    color: var(--white)
                 }
             }
         }
@@ -87,7 +87,7 @@ export const Form = styled.div`
                 justify-content: center;
                 
                 svg{
-
+                    fill: var(--white);
                 }
             }
             
@@ -99,9 +99,11 @@ export const Form = styled.div`
             transition: all 200ms;
             border: solid 0.5px gray;
             width: 100%;
+            background: var(--background);
+            color: var(--white);
 
             &:hover{
-                background: ${darken(0.1,'white')};
+                background: ${darken(0.8,'white')};
             }           
 
             &[type=submit]{
@@ -143,7 +145,7 @@ export const LinkAccounts = styled.div`
         }
         label{
             font-size: 0.75rem;
-            color: var(--gray);
+            color: var(--white);
         }
     }
 
@@ -162,12 +164,14 @@ export const LinkAccounts = styled.div`
     }
 
     footer{
+        span{
+            color: var(--white)
+        }
         font-size: 0.75rem;
-        color: black;
         margin-top: 1rem;
         margin-bottom: 1rem;
             a{  
-                color: black;
+                color: var(--white);
             }
     }
     

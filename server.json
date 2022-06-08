@@ -5,48 +5,56 @@
       "amount": 3
     }
   ],
-  "cars":[
-    {
-      "id": 123123123,
-      "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
-      "price": 38999,
-      "amount": 2
-    },
-    {
-      "id": 123123123213,
-      "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
-      "price": 38999,
-      "amount": 2
-    },
-    {
-      "id": 123123123231,
-      "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
-      "price": 38999,
-      "amount": 2
-    },
-    {
-      "id": 123123123213,
-      "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
-      "price": 38999,
-      "amount": 2
-    },
+  "cars": [
     {
       "id": 1231231232312,
       "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
+      "collection": "Linha tal",
+      "year": "2020",
+      "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
       "price": 38999,
-      "amount": 2
+      "amount": 2,
+      "category": "sedan"
     },
     {
-      "id": 12312312323123123,
-      "title": "Carro Branco",
-      "image": "https://img.freepik.com/vetores-gratis/carro-hatchback-branco-isolado-no-branco-vector_53876-64418.jpg?t=st=1653386161~exp=1653386761~hmac=aecaedf6339c8f285065cbcc07b84a7b1633c7115ac9895cb757c4caf569c904&w=740",
+      "id": 1231231232312312,
+      "title": "Carro Roxo",
+      "collection": "Linha tal",
+      "year": "2020",
+      "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
       "price": 38999,
-      "amount": 2
+      "amount": 2,
+      "category": "sedan"
+    },
+    {
+      "id": 12312312312323222000,
+      "title": "Carro Verde",
+      "collection": "Linha tal",
+      "year": "2020",
+      "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
+      "price": 38999,
+      "amount": 2,
+      "category": "sedan"
+    },
+    {
+      "id": 123123213231232320,
+      "title": "Carro Laranja",
+      "collection": "Linha tal",
+      "year": "2020",
+      "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
+      "price": 38999,
+      "amount": 2,
+      "category": "sedan"
+    },
+    {
+      "id": 12312321231232312,
+      "title": "Carro Azul",
+      "collection": "Linha tal",
+      "year": "2020",
+      "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
+      "price": 38999,
+      "amount": 2,
+      "category": "SUV"
     }
   ],
   "accounts": [
@@ -57,54 +65,50 @@
       "password": "123456789"
     },
     {
-      "id": 2,
-      "name": "Vanitas",
-      "email": "emailteste12345@email.com",
-      "password": "123456789"
+      "id": 19003249820,
+      "email": "email@email.com",
+      "password": "12345678"
     },
     {
-      "id": 19762115575,
+      "id": 789128991566,
       "name": "Nome",
-      "email": "emailteste@gmail.com",
-      "password": "123"
+      "email": "email123@gmail.com",
+      "password": "12345678"
+    }
+  ],
+  "mycars": [
+    {
+      "id": 288979194073,
+      "name": "dasdaw",
+      "collection": "dasdaw",
+      "price": 323123,
+      "category": "Sedan",
+      "trade": "on",
+      "km": "123123",
+      "year": "2313",
+      "file": {}
     },
     {
-      "id": 879242772587,
-      "name": "",
-      "email": "dasdwda@d2312",
-      "password": "123"
+      "id": 1620173809561,
+      "name": "dawdad",
+      "collection": "dawdasd",
+      "price": 2312,
+      "category": "Sedan",
+      "trade": "on",
+      "km": "23123",
+      "year": "22312",
+      "file": "{}"
     },
     {
-      "id": 1428553581241,
-      "email": "2312312",
-      "password": "3123123312"
-    },
-    {
-      "id": 672704868407,
-      "email": "2312312",
-      "password": "3123123312"
-    },
-    {
-      "id": 195462481723,
-      "email": "23123123123",
-      "password": "231231231231"
-    },
-    {
-      "id": 1560800559544,
-      "email": "31231231",
-      "password": "31231231"
-    },
-    {
-      "id": 216594708673,
-      "email": "3123123131231",
-      "password": "31231231"
-    },
-    {
-      "id": 1424175728146,
-      "email": "emailteste123@gmail.com",
-      "password": "123456789"
+      "id": 405831283716,
+      "name": "dwdas",
+      "collection": "dasdsa",
+      "price": 3123,
+      "category": "Sedan",
+      "trade": "on",
+      "km": "123123",
+      "year": "312321",
+      "file": "{}"
     }
   ]
-  
 }
-
