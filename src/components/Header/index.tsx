@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { FiSearch, FiUser, FiX } from 'react-icons/fi';
 
 
-import { Container, Content } from './styles';
+import { Container, Content, LogIn, LogOut } from './styles';
 
 import { useLogin } from '../../hooks/useLogin';
 
@@ -20,12 +20,10 @@ interface headerProps{
 const Header = (): JSX.Element => {
 
   
-  const [category, setCategory] = useState('sedan')
+  const [category, setCategory] = useState('')
 
   const [text, setText] = useState('');
 
-  const [classHome, setClassHome ] = useState('active')
-  const [classSale, setClassSale ] = useState('')
   const [overlayIsOpen, setOverlayIsOpen] = useState(false)
   const [overlayOpen, setOverlayOpen] = useState({})
   const [overlayClose, setOverlayClose] = useState({})
@@ -91,21 +89,23 @@ const Header = (): JSX.Element => {
 
   function Guest(){
     return(
-      <article>
+      <LogIn>
       <FiUser size={32} color='#ffffff' onClick={()=>setOverlayIsOpen(true)}/>
         <div style={overlayOpen}>
             <Link to='/login'><button id='singInButton'>Entrar</button></Link>
             <Link to='/createaccount'><button>Criar Conta</button></Link>
         </div>
-      </article>
+      </LogIn>
     )
   }
   function User(){
     return(
+      <LogOut>
       <div>
-        <strong>Bem vindo {currentUser.name}</strong>
-        <button onClick={() => LoggoutAccount()}>Loggout</button>
+        <button className='logout' onClick={() => LoggoutAccount()}>Bem vindo {currentUser.name}
+        <FiX /></button>
       </div>
+      </LogOut>
     )
   }
 
@@ -123,14 +123,14 @@ const Header = (): JSX.Element => {
     <Container>
       <div style={overlayClose} onClick={()=>setOverlayIsOpen(false)}></div>
       <Content>
-        <Link to="/home"><img src={LogoImg} alt="Imagem da Logo" /></Link>
+        <Link to="/"><img src={LogoImg} alt="Imagem da Logo" /></Link>
           
             <nav>
               <a className={ window.location.pathname === '/' ? 'active' : ''} href='/'>Comprar</a>
               <a className={ window.location.pathname === '/mycars' ? 'active' : ''} href='/mycars'>Vender</a>
             </nav>
             <div>
-              {searchIcon()}
+              {searchIcon()} 
               <input className={searchBar} type="text" disabled={disabled} value={text} onChange={(e) => setText(e.target.value)} 
               placeholder='Oque você está procurando?'/>
               <SearchIpunt text={text} category={category}/>
@@ -144,7 +144,5 @@ const Header = (): JSX.Element => {
 };
 
 export default Header;
-function useRouter() {
-  throw new Error('Function not implemented.');
-}
+
 

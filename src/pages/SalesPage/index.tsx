@@ -2,10 +2,6 @@ import React, { useState, useEffect, useMemo, FormEvent } from 'react';
 
 import { Container, Content, ProductSection } from './styles';
 
-import CoverImg from '../../assets/images/CoverImg.png'
-
-
-import Header from '../../components/Header'
 
 import { api } from '../../services/api';
 
@@ -81,9 +77,9 @@ const SalesPage = (): JSX.Element => {
 
     if(!validate()) return;
 
-    console.log(car?.file)
     if(!car) return;
-
+    
+    //JSON Server não recebe o arquivo file, necessario modificação por banco de dados
     await api.post('mycars',{
       id: car.id,
       name: car.name,
@@ -95,6 +91,8 @@ const SalesPage = (): JSX.Element => {
       year: car.year,
       file: car.file
     })
+
+    console.log(car.file)
       
       const saveDataForm = true;
 
@@ -157,7 +155,6 @@ const SalesPage = (): JSX.Element => {
 
   return (
     <Container>
-      <Header/> 
       <Content>
       {status.type === 'success' ? <p style={{ color: "green" }}>{status.mensagem}</p> : ""}
       {status.type === 'error' ? <p style={{ color: "#ff0000" }}>{status.mensagem}</p> : ""}

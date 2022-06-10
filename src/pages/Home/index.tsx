@@ -37,7 +37,7 @@ const Home = (): JSX.Element => {
 
   return (
     <Container>
-      <Header/>
+      
       <Content>
         <div>
           <label>Bem vindo!👋</label>

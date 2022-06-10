@@ -108,7 +108,7 @@ export const Content = styled.section`
     } 
     
   }
-  svg{
+  >svg{
       max-width: 10%;
       height: auto;
       fill: var(--white);
@@ -175,6 +175,15 @@ export const Cars = styled.ul`
                         top: 4rem;
                         font-size: 1rem;
                     }
+                }
+
+                svg{
+                  width: 16px;
+                  height: 16px;
+                  position: absolute;
+                  right: 1rem;
+                  top: 1rem;
+                  color: var(--white);
                 }
 
                 

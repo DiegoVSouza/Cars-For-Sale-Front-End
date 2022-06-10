@@ -23,7 +23,7 @@ type Inputs = {
   const schema = yup.object({
     email: yup.string().email('Informe um email valido').required('Informe um email valido'),
     name: yup.string().required('Informe seu Nome'),
-    phone: yup.number().required('Por favor informe o seu numero de telefone'),
+    phone: yup.number().typeError('Por favor informe o seu numero de telefone').required('Por favor informe o seu numero de telefone'),
 }).required();
 
 export const ContactModal = ({
@@ -37,8 +37,9 @@ export const ContactModal = ({
   });
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
-    window.location.href ="mailto:dvsdiegovieira@gmail.com?subject=Um Comprador se Interessou pelo seu Anuncio&amp;body=Olá,%0D%0A%0D%0A[corpo do email]%0D%0A%0D%0AAtenciosamente,%0D%0A[nome do usuário]"
-  };
+    console.log(data);
+    onRequestClose()
+  }; 
 
 
 
@@ -51,14 +52,14 @@ export const ContactModal = ({
     >
       <Container>
         <form onSubmit={handleSubmit(onSubmit)} >
-                        <label>Email</label>
+                        <label>Nome</label>
                         <input
                             type='text'
                             {...register("name")}
                         />
                         <p>{errors.name?.message}</p>
                         
-                        <label>Senha</label>
+                        <label>Email</label>
                             <input
                             type='text'
 
@@ -69,13 +70,13 @@ export const ContactModal = ({
                         <label>Telefone</label>
                             <input
                             type='number'
-
                             {...register("phone")}
+                            
                             />
                         <p>{errors.phone?.message}</p>
                         <input type="submit" value="Entrar" 
-                        className="react-modal-close"
-                        onClick={onRequestClose}/>
+                        
+                        />
                     </form>
         </Container>
     </Modal>

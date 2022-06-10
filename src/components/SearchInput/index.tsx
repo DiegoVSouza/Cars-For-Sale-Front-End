@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import { Card, Cars, Container } from "./styles";
@@ -58,7 +58,13 @@ const SearchIpunt: React.FC<productProps> = ({text, category})=>{
         setOnSearch(false)
       }
 
-      const search = cars.filter(car=> car.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()))
+      if(cars.length === 0 ) return;
+
+      const carslowercase = cars.filter(car => car.name.toLocaleLowerCase());
+
+      const result = typeof text === 'string' ? text.toLocaleLowerCase() : '';
+
+      const search = carslowercase.filter(car=>  car.name.includes(result))
         setFilter(search)
       },[text])
     

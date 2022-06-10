@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 
 import { Container, Content, ProductSection } from './styles';
 
-import { useModal } from '../../hooks/useModal';
-
-
-import Header from '../../components/Header'
 import { ContactModal } from '../../components/ContactModal';
 import { AiFillCalendar, AiFillCar } from 'react-icons/ai';
 import { MdCategory } from 'react-icons/md';
@@ -30,7 +26,6 @@ const ProductPage = (): JSX.Element => {
 
   return (
     <Container>
-      <Header/> 
       <Content>
       <h1>Carro Tal</h1>
       <ProductSection>

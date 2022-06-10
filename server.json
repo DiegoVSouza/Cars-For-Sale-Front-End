@@ -8,7 +8,7 @@
   "cars": [
     {
       "id": 1231231232312,
-      "title": "Carro Branco",
+      "name": "Carro Branco",
       "collection": "Linha tal",
       "year": "2020",
       "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
@@ -18,7 +18,7 @@
     },
     {
       "id": 1231231232312312,
-      "title": "Carro Roxo",
+      "name": "Carro Roxo",
       "collection": "Linha tal",
       "year": "2020",
       "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
@@ -28,7 +28,7 @@
     },
     {
       "id": 12312312312323222000,
-      "title": "Carro Verde",
+      "name": "Carro Verde",
       "collection": "Linha tal",
       "year": "2020",
       "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
@@ -38,7 +38,7 @@
     },
     {
       "id": 123123213231232320,
-      "title": "Carro Laranja",
+      "name": "Carro Laranja",
       "collection": "Linha tal",
       "year": "2020",
       "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
@@ -48,7 +48,7 @@
     },
     {
       "id": 12312321231232312,
-      "title": "Carro Azul",
+      "name": "Carro Azul",
       "collection": "Linha tal",
       "year": "2020",
       "image": "https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png",
@@ -78,37 +78,15 @@
   ],
   "mycars": [
     {
-      "id": 288979194073,
-      "name": "dasdaw",
-      "collection": "dasdaw",
-      "price": 323123,
-      "category": "Sedan",
+      "id": 1465473832345,
+      "name": "dasjdklaw",
+      "collection": "dawsdwa",
+      "price": 12312,
+      "category": "SUV",
       "trade": "on",
-      "km": "123123",
-      "year": "2313",
+      "km": "213123",
+      "year": "12312",
       "file": {}
-    },
-    {
-      "id": 1620173809561,
-      "name": "dawdad",
-      "collection": "dawdasd",
-      "price": 2312,
-      "category": "Sedan",
-      "trade": "on",
-      "km": "23123",
-      "year": "22312",
-      "file": "{}"
-    },
-    {
-      "id": 405831283716,
-      "name": "dwdas",
-      "collection": "dasdsa",
-      "price": 3123,
-      "category": "Sedan",
-      "trade": "on",
-      "km": "123123",
-      "year": "312321",
-      "file": "{}"
     }
   ]
 }

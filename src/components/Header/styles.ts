@@ -29,6 +29,7 @@ export const Content = styled.section`
     nav{
       margin-left: 2rem;
       height: 5rem;
+      width: 20rem;
       
       a{
         display: inline-block;
@@ -69,22 +70,24 @@ export const Content = styled.section`
       justify-self: flex-end;
       position: relative;
       display: flex;
+      justify-content: flex-end;
       align-items: center;
       margin: 0 1rem 0 auto;
-      
-      
+      width: 100%;
 
-      svg{
-        position: absolute;
-        left: 0.75rem;
-        height: 2rem;
+      >svg{
+        
         z-index: 2;
+        cursor: pointer;
         
         
 
         &.open{
           width: 16px;
           height: 16px;
+          position: absolute;
+          left: 0.75rem;
+          height: 2rem;
         }
 
         &.close{
@@ -110,7 +113,7 @@ export const Content = styled.section`
       }
 
       &.open{
-        width: 40rem;
+        width: 100%;
         background: var(--gray-medium);
         
       }
@@ -130,7 +133,12 @@ export const Content = styled.section`
     height: 3rem;
     }
 
-    article{
+
+
+`
+
+export const LogIn = styled.section`
+
       justify-self: flex-end;
       color: var(--white);
       display: flex;
@@ -138,10 +146,11 @@ export const Content = styled.section`
 
 
       >svg{
-        position:inherit;
+        
+        cursor: pointer;
       }
 
-      >div{
+      div{
         position: absolute;
         background: var(--white);
         width: 12rem;
@@ -181,9 +190,37 @@ export const Content = styled.section`
             
         }
       }
-    }
 
+`
 
+export const LogOut = styled.section`
+        justify-self: flex-end;
+        color: var(--white);
+        font-size: 1rem;
+
+        div{
+          display: flex;
+          align-items: center;
+        }
+    
+
+        button{
+          width: 100%;
+          display: flex;
+          background: var(--gray-medium);
+          padding: 0.5rem 0.75rem 0.5rem 1rem;
+          border-radius: 10px;
+
+        }
+
+        svg{
+          position: relative;
+          width: 32px;
+          height: 32px;
+          color: var(--black);
+          margin-left: 0.5rem;
+        }
+        
 
 `
   

@@ -19,7 +19,14 @@ interface LoginProviderProps {
 
 export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
 
-    const [isLogged, setIsLogged] = useState(false)
+    const [isLogged, setIsLogged] = useState(()=>{
+        const userislogged = localStorage.getItem('@ecommerce:userislogged')
+        if (userislogged) {
+            return JSON.parse(userislogged);
+          }
+      
+          return false;
+        });
     const [currentUser, setCurrentUser] = useState<Account>(() => {
 
         const storageUser = localStorage.getItem('@ecommerce:user')
@@ -34,7 +41,7 @@ export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
     const history = useHistory();
 
     function concluded(){
-        history.push('/home')
+        history.push('/')
     }
 
     async function LoginAccount(id: number){
@@ -43,7 +50,9 @@ export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
         if(user){
             setCurrentUser(user)
             localStorage.setItem('@ecommerce:user', JSON.stringify(user));
+            
             setIsLogged(true)
+            localStorage.setItem('@ecommerce:userislogged', JSON.stringify(true));
             concluded()
         }       
     }
@@ -57,6 +66,9 @@ export function LoginProvider({ children }: LoginProviderProps): JSX.Element {
         
         localStorage.setItem('@ecommerce:user', '')
         setIsLogged(false)
+
+        setIsLogged(false)
+        localStorage.setItem('@ecommerce:userislogged', JSON.stringify(false));
 
     }
 

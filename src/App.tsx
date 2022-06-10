@@ -10,6 +10,7 @@ import { LoginProvider } from './hooks/useLogin';
 import { ContactModal } from './components/ContactModal';
 import Modal from 'react-modal'
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 Modal.setAppElement('#root');
 
@@ -21,9 +22,9 @@ const App = (): JSX.Element => {
     <LoginProvider>
         <ModalProvider>
           <GlobalStyles />
+          <Header/>
           <Routes />
-          
-          <ToastContainer autoClose={3000} />
+          <Footer/>
         </ModalProvider>
       </LoginProvider>
     </BrowserRouter>

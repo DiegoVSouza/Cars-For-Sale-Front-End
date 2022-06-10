@@ -4,7 +4,7 @@ import { api } from "../../services/api";
 import { Cars, Container, Content, NoAccount } from "./styles";
 
 import { useLogin } from '../../hooks/useLogin'
-import Header from "../../components/Header";
+import { FiTrash } from "react-icons/fi";
 
 
 interface Car{
@@ -20,22 +20,26 @@ interface Car{
   }
 
 const MyCars = (): JSX.Element => {
-    const [myCars, setMyCars] = useState<Car[]>([])
+
+  // Erro na imagem pois JSON Server não recebe o arquivo file, necessario modificação por banco de dados
+    const [myCars, setMyCars] = useState<Car[]>([]);
 
     const { isLogged } = useLogin()
 
-    useEffect(() => {
-        async function loadProducts() {
-          const {data: cars} = await api.get(`mycars`)
-          const carsFormatted = cars.map(function (car: Car) {
-            return { ...car, price: new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(car.price ) }
-          })
-          setMyCars(carsFormatted)
-        }
+    async function loadProducts() {
+      const {data: cars} = await api.get(`mycars`)
+      const carsFormatted = cars.map(function (car: Car) {
+        return { ...car, price: new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(car.price ) }
+      })
+      setMyCars(carsFormatted)
+    }
     
+
+    useEffect(() => {
+      
         loadProducts();
       }, []);
 
@@ -50,23 +54,30 @@ const MyCars = (): JSX.Element => {
           }
           return <></>
       }
+
+      function DeleteCar(carId:number){
+
+        api.delete(`mycars/${carId}`)
+        loadProducts();
+       
+      }
       
     if(isLogged){
       return(
         <Container>
-          <Header/> 
+
             <Content>
               
                 <h1>MyCars</h1>
                 <Cars>
                 {myCars.map(car=>(
                     <li key={car.id}>
+                      <FiTrash onClick={()=>DeleteCar(car.id)}/>
                     <img src={car.file.toString()} alt="Imagem do Carro" />
                     <label>{car.name}</label>
                     <label>{car.collection}</label>
                     <label>{car.year}</label>
                     <strong>{car.price}</strong>
-                    <Link to='/productpage'><button>Crie agora</button></Link>
                 </li>
                 ))}
                 </Cars>
@@ -80,7 +91,6 @@ const MyCars = (): JSX.Element => {
     }else{
       return(
         <>
-        <Header />
         <NoAccount>
           <div>
             <h1>Por favor se conecte para acessar essar area</h1>
