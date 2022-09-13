@@ -115,23 +115,7 @@ const SalesPage = (): JSX.Element => {
       brand: data.brand,
       license_plate: data.license_plate
     };
-    var file = [] as any
 
-    // for (var i = 0; i < files.length; i++) {
-
-
-    //   file.push({
-    //     fieldname: 'images',
-    //     originalname: files[i].name,
-    //     encoding: '7bit',
-    //     mimetype: files[i].type,
-    //     destination: '',
-    //     filename: files[i].name,
-    //     path: files[i].preview,
-    //     size: files[i].size
-    //   })
-
-    // }
 
     const formData = new FormData()
     files.map((file: any) => {
@@ -154,7 +138,7 @@ const SalesPage = (): JSX.Element => {
 
       })
     })
-    // history('/mycars')
+    history('/mycars')
   };
 
 
@@ -232,7 +216,7 @@ const SalesPage = (): JSX.Element => {
   );
 
   return (
-    <Container>
+    <Container >
       <Content>
         <ProductSection>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -247,7 +231,7 @@ const SalesPage = (): JSX.Element => {
             <label>Descrição</label>
             <input
               type="text"
-              placeholder="Digite aqui a linha"
+              placeholder="Digite aqui a descrição"
               {...register("description")}
             />
             <p>{errors.description?.message}</p>
@@ -264,7 +248,7 @@ const SalesPage = (): JSX.Element => {
                 <label>Marca</label>
                 <input
                   type="string"
-                  placeholder="digite aqui o ano"
+                  placeholder="digite aqui a marca"
                   {...register("brand")}
                 />
                 <p>{errors.brand?.message}</p>
@@ -273,7 +257,7 @@ const SalesPage = (): JSX.Element => {
                 <label>Placas</label>
                 <input
                   type="string"
-                  placeholder="digite aqui os KM"
+                  placeholder="digite aqui a placa"
                   {...register("license_plate")}
                 />
                 <p>{errors.license_plate?.message}</p>

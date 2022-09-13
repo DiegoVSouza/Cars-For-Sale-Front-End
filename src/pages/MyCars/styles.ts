@@ -149,7 +149,6 @@ export const Cars = styled.ul`
                 transition: box-shadow 200ms;
                 padding: 1rem 2rem; 
                 border-radius: 10px;
-
                 color: var(--white);
 
                 &:hover{
@@ -160,6 +159,7 @@ export const Cars = styled.ul`
                     max-width: 20rem;
                     height: auto;
                     align-self: center;
+                    transform: translateY(30%);
                 }
 
                 strong{
@@ -172,7 +172,6 @@ export const Cars = styled.ul`
                 label{
                     font-size: 1.25rem;
                     margin-top: 1rem;
-                    position: absolute;
                     left: 2rem;
                     top: 0.5rem;
                     &:nth-of-type(2){

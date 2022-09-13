@@ -55,7 +55,7 @@ const ProductPage = (): JSX.Element => {
           style: "currency",
           currency: "BRL",
         }).format(car.price),
-        image: images,
+        images: images,
         category: category?.name
       };
 
@@ -107,9 +107,7 @@ const ProductPage = (): JSX.Element => {
 
 
           <section>
-            <button onClick={() => setIdx(idx - 1)}>{"<-"}</button>
-            <img src={car.images[idx].image_name} alt="" />
-            <button onClick={() => setIdx(idx + 1)}>{"->"}</button>
+            <img src={"http://pngimg.com/uploads/volkswagen/volkswagen_PNG1821.png"} alt="" />
           </section>
         </ProductSection>
 

@@ -44,9 +44,9 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     async function loadProducts() {
       const { data: categories } = await api.get(`/categories`)
-
       setCategories(categories)
     }
+    loadProducts()
   }, [])
 
   return (
@@ -70,7 +70,7 @@ const Home = (): JSX.Element => {
         <img src={coverCarImg} alt="cover Img" />
       </Content>
       {categories.map(category => (
-        <Product product={category.id} />
+        <Product category_id={category.id} />
       ))}
 
     </Container>

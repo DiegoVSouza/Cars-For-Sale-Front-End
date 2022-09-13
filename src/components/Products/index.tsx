@@ -6,39 +6,61 @@ import { updateCar } from "../../store/ducks/ids/actions";
 import { formatPrice } from "../../util/formats/formatPrice";
 import { Card, Cars, Container } from "./styles";
 
-interface Cars {
-  id: string;
-  name: string;
-  collection: string;
-  year: number;
-  image: string;
-  price: number;
-  category: string;
-  plate: string
+interface image {
+  path: string
+  car_id: string
 }
 
-interface CarsFormatted extends Cars {
+interface Car {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  license_plate: string;
+  brand: string;
+  category_id: string;
+  category: string;
+  images: image;
+}
+interface CarsFormatted extends Car {
   priceFormatted: string;
 }
 
 interface productProps {
-  product: string;
+  category_id: string;
 }
 
-const Product: React.FC<productProps> = ({ product }) => {
+interface category {
+  id: string
+  name: string
+  description: string
+}
+
+const Product: React.FC<productProps> = ({ category_id }) => {
   const dispactch = useDispatch();
   const history = useNavigate()
   const [cars, setCars] = useState<CarsFormatted[]>([])
-
+  const [category, setCategory] = useState<category>({
+    id: "",
+  name: "teste",
+  description: ""
+  })
   useEffect(() => {
     async function loadProducts() {
-      const { data: cars } = await api.get(`/cars/available?category_id=${product}`)
-      const carsFormatted = cars.map(function (car: Cars) {
+      const { data: cars } = await api.get(`/cars/available?category_id=${category_id}`)
+      const { data: categories } = await api.get<category[]>(`/categories`)
+      const category = categories.find((category) => category.id === category_id)
+      setCategory(category as category)
+      
+      const carsFormatted = cars.map(function (car: Car) {
+      const category = categories.find((category) => category.id === car.category_id)
+
         return {
           ...car, price: new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-          }).format(car.price)
+          }).format(car.price),
+          category: category?.name
         }
       })
       setCars(carsFormatted)
@@ -47,7 +69,7 @@ const Product: React.FC<productProps> = ({ product }) => {
     loadProducts();
   }, []);
 
-  const name = product[0].toUpperCase() + product.substring(1);;
+  const name = category.name[0].toUpperCase() + category.name.substring(1);;
   const goToProductPage = (carId: string) => {
     dispactch(updateCar(carId))
     history('/productpage')
@@ -59,10 +81,10 @@ const Product: React.FC<productProps> = ({ product }) => {
         <Cars>
           {cars.map(car => (
             <li key={car.id}>
-              <img src={car.image} alt="Imagem do Carro" />
+              <img src={"http://pngimg.com/uploads/volkswagen/volkswagen_PNG1821.png"} alt="Imagem do Carro" />
               <label>{car.name}</label>
-              <label>{car.collection}</label>
-              <label>{car.year}</label>
+              <label>{car.brand}</label>
+              <label>{car.category}</label>
               <strong>{car.price}</strong>
               <button onClick={() => goToProductPage(car.id)}>Compre agora</button>
             </li>

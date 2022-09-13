@@ -9,7 +9,8 @@ import { ApplicationState } from "../../store";
 import { useSelector } from "react-redux";
 
 interface image {
-  image_name: string
+  path: string
+  car_id: string
 }
 interface category {
   id: string
@@ -40,23 +41,26 @@ const MyCars = (): JSX.Element => {
   async function loadProducts() {
     const { data: cars } = await api.get(`/cars/available?user_id=${user.user.id}`);
     const { data: categories } = await api.get<category[]>(`/categories`)
-    const carsFormatted = cars.map(async (car: Car) => {
-      const { data: images } = await api.get(`/cars/images?car_id=${car.id}`)
+    const { data: images } = await api.get<image[]>(`/cars/images`)
+
+    const carsFormatted = await cars.map( (car: Car) => {
       const category = categories.find((category) => category.id === car.category_id)
+      const image = images.filter((image) => image.car_id === car.id)
       return {
         ...car,
         price: new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
         }).format(car.price),
-        image: images[0],
+        images: image[0],
         category: category?.name
       };
     });
+    console.log(carsFormatted)
+
     setMyCars(carsFormatted);
   }
   useEffect(() => {
-
     loadProducts();
   }, []);
 
@@ -100,7 +104,8 @@ const MyCars = (): JSX.Element => {
             {myCars.map((car) => (
               <li key={car.id}>
                 <FiTrash onClick={() => DeleteCar(car.id)} size={50} />
-                <img src={car.images.image_name} alt="Imagem do Carro" />
+                {/* Mostrar imagens upadas ainda nao implementado */}
+                <img src={"http://pngimg.com/uploads/volkswagen/volkswagen_PNG1821.png"} alt="Imagem do Carro" />
                 <label>{car.name}</label>
                 <label>{car.brand}</label>
                 <label>{car.category}</label>
