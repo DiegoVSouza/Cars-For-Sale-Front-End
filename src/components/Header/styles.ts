@@ -145,7 +145,7 @@ export const LogIn = styled.section`
       position: relative;
 
 
-      >svg{
+      svg{
         
         cursor: pointer;
       }
@@ -223,4 +223,3 @@ export const LogOut = styled.section`
         
 
 `
-  

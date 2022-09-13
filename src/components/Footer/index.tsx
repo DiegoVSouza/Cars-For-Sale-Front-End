@@ -7,18 +7,18 @@ import { ReactComponent as EmailIcon } from '../../assets/images/icons/emailIcon
 
 const Footer = (): JSX.Element => {
 
-  
+
     return (
         <Container>
- 
+
             <div>
                 <section>
-                <WhatsappIcon/>
-                <p>dvsdiegovieira@gmail.com</p>
+                    <WhatsappIcon />
+                    <p>dvsdiegovieira@gmail.com</p>
                 </section>
                 <section>
-                <EmailIcon/>
-                <p>88 997974229</p>
+                    <EmailIcon />
+                    <p>88 997974229</p>
                 </section>
             </div>
             <div >
@@ -27,6 +27,6 @@ const Footer = (): JSX.Element => {
 
         </Container>
     );
-  };
-  
-  export default Footer;
+};
+
+export default Footer;

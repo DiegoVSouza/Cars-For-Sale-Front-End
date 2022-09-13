@@ -103,7 +103,7 @@ export const Form = styled.div`
             color: var(--white);
 
             &:hover{
-                background: ${darken(0.8,'white')};
+                background: ${darken(0.8, 'white')};
             }           
 
             &[type=submit]{

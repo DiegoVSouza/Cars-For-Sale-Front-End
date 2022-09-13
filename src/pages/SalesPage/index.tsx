@@ -1,233 +1,320 @@
-import React, { useState, useEffect, useMemo, FormEvent } from 'react';
+import React, { useState, useEffect, useMemo, FormEvent } from "react";
 
-import { Container, Content, ProductSection } from './styles';
+import { Container, Content, ProductSection } from "./styles";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useForm, SubmitHandler } from "react-hook-form";
 
+import { api } from "../../services/api";
+import Dropzone, { useDropzone } from "react-dropzone";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { ApplicationState } from "../../store";
 
-import { api } from '../../services/api';
-
-interface Car{
-  id: number,
-  name: string,
-  collection: string,
-  price: number,
-  category: string,
-  trade: string,
-  km: string,
-  year: string,
-  file: File | string
+interface ICar {
+  id: number;
+  name: string;
+  description: string;
+  license_plate: string;
+  brand: string;
+  price: number;
+  category: string;
+  file: File | string;
 }
 
+const schema = yup
+  .object({
+    name: yup.string().required("Informe seu nome"),
+    category: yup.string().required("Insira a categoria").nullable(false),
+    description: yup.string().required("Informe as especificações"),
+    brand: yup.string().required("Informe a marca do carro"),
+    license_plate: yup.string().required("Informe a placa do carro"),
+    price: yup
+      .number()
+      .required("Insira o preço sugerido")
+      .typeError("Insira o preço sugerido"),
+  })
+  .required();
+
+interface categories {
+  name: string;
+  id: string;
+
+}
+
+interface File {
+  name: string;
+  filename: string;
+}
+
+interface Files {
+  path: string;
+  preview: string;
+}
 
 const SalesPage = (): JSX.Element => {
+  const { data: user } = useSelector((state: ApplicationState) => state.tokens);
 
-  const [id, setId] = useState(Math.round(Date.now()*Math.random()))
 
-  const [name, setName] = useState('')
-  const [collection, setCollection] = useState('')
-  const [price, setPrice] = useState(0)
-  const [category, setCategory] = useState('')
-  const [trade, setTrade] = useState('')
-  const [year, setYear] = useState('')
-  const [km, setKm] = useState('')
-  const [file, setFile] = useState<File | string>('')
-  const [fileUrl, setfileUrl] = useState<string | undefined | ArrayBuffer | null>()
+  const [file, setFile] = useState<File | string>("");
+  const [files, setFiles] = useState([] as any);
+  const [categories, setCategories] = useState([] as categories[]);
 
-  const [status, setStatus] = useState({
-    type: '',
-    mensagem: ''
+  const [fileErrorMessage, setFileErrorMessage] = useState('');
+
+  const history = useNavigate()
+
+
+  const [fileUrl, setfileUrl] = useState<
+    string | undefined | ArrayBuffer | null
+  >();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<ICar>({
+    resolver: yupResolver(schema),
   });
 
-  const [car, setCar] = useState<Car>()
+  useEffect(() => {
+    if (files.length > 0) {
+      setFileErrorMessage('')
+    }
+  }, [files])
 
-  useEffect(()=>{
-    setCar({
-      id: id,
-      name: name,
-      collection: collection,
-      price: price,
-      category: category,
-      trade: trade,
-      km: km,
-      year: year,
-      file: file
-    })
-  },[name,collection,category,trade,year,km,file])
-
-  
-
-  function validate(){
-
-    if(!name) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo nome!'});
-    if(!collection) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Linha!'});
-    if(!price) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Preço!'});
-    if(!category) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Categoria!'});
-    if(!trade) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Troca!'});
-    if(!year) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Ano!'});
-    if(!km) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Kilometragem!'});
-    if(!file) return setStatus({type: 'error', mensagem: 'Erro: Necessário preencher o campo Imagem!'});
-
-    return true
-  }
+  useEffect(() => {
+    async function loadData() {
+      const { data } = await api.get('/categories')
+      setCategories(data)
+    }
+    loadData()
+  }, [])
 
 
-  
-
-  async function addCar (e:FormEvent<HTMLFormElement>){
-    e.preventDefault();
-
-    if(!validate()) return;
-
-    if(!car) return;
-    
-    //JSON Server não recebe o arquivo file, necessario modificação por banco de dados
-    await api.post('mycars',{
-      id: car.id,
-      name: car.name,
-      collection: car.collection,
-      price: car.price,
-      category: car.category,
-      trade: car.trade,
-      km: car.km,
-      year: car.year,
-      file: car.file
-    })
-
-    console.log(car.file)
-      
-      const saveDataForm = true;
-
-    if (saveDataForm) {
-      
-
-      setStatus({
-        type: 'success',
-        mensagem: "Usuário cadastrado com sucesso!"
+  const onSubmit: SubmitHandler<ICar> = async (data) => {
+    if (data.category === "null") {
+      setError("category", {
+        type: "focus",
+        message: "Selecione a categoria",
       });
-      setCar({
-        id: 0,
-        name: '',
-        collection: '',
-        price: 0,
-        category: '',
-        trade: '',
-        km: '',
-        year: '',
-        file: ''
-      });
-      
-    } else {
-      setStatus({
-        type: 'error',
-        mensagem: "Erro: Usuário não cadastrado com sucesso!"
-      });
-
-    };
- 
-  }
-
-  const fileChangedHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    
-    setFile(e.target.files[0]);
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setfileUrl(reader.result as string);
-    };
-
-    if(e.target.files instanceof FileList){
-      reader.readAsDataURL(e.target.files[0])
+      return;
+    }
+    if (files.length === 0) {
+      setFileErrorMessage('Adicione imagens do carro')
+      return
     }
 
-              
-  }
+    setFileErrorMessage('')
+    const car = {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      category_id: data.category,
+      brand: data.brand,
+      license_plate: data.license_plate
+    };
+    var file = [] as any
 
-  let imagePreview = (<div className="picture">Please select an Image for Preview</div>);
-      if (fileUrl) {
-        imagePreview = (
-          <div className="picture">
-            <img src={fileUrl.toString()} alt="icon" />
-            {' '}
-          </div>
-        );
-      }
+    // for (var i = 0; i < files.length; i++) {
+
+
+    //   file.push({
+    //     fieldname: 'images',
+    //     originalname: files[i].name,
+    //     encoding: '7bit',
+    //     mimetype: files[i].type,
+    //     destination: '',
+    //     filename: files[i].name,
+    //     path: files[i].preview,
+    //     size: files[i].size
+    //   })
+
+    // }
+
+    const formData = new FormData()
+    files.map((file: any) => {
+      formData.append("images", file)
+
+    })
+    console.log(formData)
+    await api.post("/cars", car, {
+      headers: {
+        'authorization': `Basic ${user.refresh_token}`
+      },
+
+    }).then(async ({ data }) => {
+
+      await api.post(`/cars/images/${data.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'authorization': `Basic ${user.refresh_token}`
+        },
+
+      })
+    })
+    // history('/mycars')
+  };
+
+
+  const thumbInner = {
+    display: "flex",
+    minWidth: 0,
+    overflow: "hidden"
+  };
+
+
+
+  const activeStyle = {
+    borderColor: "#2196f3",
+    width: "100%",
+    padding: '10rem',
+  };
+
+  const acceptStyle = {
+    borderColor: "#00e676"
+  };
+
+  const rejectStyle = {
+    borderColor: "#ff1744"
+  };
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject
+  } = useDropzone({
+    accept: { 'image/*': ['.jpeg', '.jpg', '.png'] },
+    onDrop: (acceptedFiles: any) => {
+      console.log("accepted", acceptedFiles);
+      setFiles(
+        acceptedFiles.map((file: any) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file)
+          })
+        )
+      );
+    }
+  });
+
+  const style = React.useMemo(
+    () => ({
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {})
+    }),
+    [isDragActive, isDragReject, isDragAccept]
+  );
+
+  const thumbs = files.map((file: any, index: any) => {
+    return (
+      <div className="thumb" style={{
+        position: "absolute",
+        left: index < 3 ? `${2 + index * 5}rem` : `${2 + 4 * 5}rem`,
+        zIndex: `${10 - index}`
+      }} key={file.name}>
+        <div style={thumbInner}>
+          {index < 3 ? <img alt="selected" src={file.preview} className='img' /> : <h2>+{files.length - 3}</h2>}
+        </div>
+      </div>
+    )
+
+  });
+
+  useEffect(
+    () => () => {
+      files.forEach((file: any) => URL.revokeObjectURL(file.preview));
+    },
+    [files]
+  );
 
   return (
     <Container>
       <Content>
-      {status.type === 'success' ? <p style={{ color: "green" }}>{status.mensagem}</p> : ""}
-      {status.type === 'error' ? <p style={{ color: "#ff0000" }}>{status.mensagem}</p> : ""}
-      <ProductSection>
-
-          <form onSubmit={addCar}>
+        <ProductSection>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label>Nome do carro</label>
-            <input type="text" onChange={(e)=> setName(e.target.value)} 
-            placeholder='Digite aqui o nome'/>
-            <label>Linha</label>
-            <input type="text" onChange={(e)=> setCollection(e.target.value)} 
-            placeholder='Digite aqui a linha'
+            <input
+              type="text"
+              placeholder="Digite aqui o nome"
+              {...register("name")}
             />
+            <p>{errors.name?.message}</p>
+
+            <label>Descrição</label>
+            <input
+              type="text"
+              placeholder="Digite aqui a linha"
+              {...register("description")}
+            />
+            <p>{errors.description?.message}</p>
             <label>Preço</label>
-            <input type="number" onChange={(e)=> setPrice(JSON.parse(e.target.value))} 
-            placeholder='Digite aqui o preço'
+            <input
+              type="number"
+              {...register("price")}
+              placeholder="Digite aqui o preço"
             />
+            <p>{errors.price?.message}</p>
+
             <div>
               <div>
+                <label>Marca</label>
+                <input
+                  type="string"
+                  placeholder="digite aqui o ano"
+                  {...register("brand")}
+                />
+                <p>{errors.brand?.message}</p>
+              </div>
+              <div>
+                <label>Placas</label>
+                <input
+                  type="string"
+                  placeholder="digite aqui os KM"
+                  {...register("license_plate")}
+                />
+                <p>{errors.license_plate?.message}</p>
+              </div>
+              <div className="ratiodiv">
                 <label>Categoria</label>
 
-                <select name='trade' onChange={e => setCategory(e.target.value) }>
-                <option value="null">--Select--</option>
-                <option value="Sedan">Sedan</option>
-                <option value="SUV">SUV</option>
-                <option value="Hatch">Hatch</option>
-                <option value="Pick-up">Pick-up</option>
-                
-            </select>
-              </div>
-              
-              <div className='ratiodiv'>
-              <label>Aceita Troca?</label>
-              <input type="radio" name='trade'
-              onChange={(e)=> setTrade(e.target.value)} 
-              />
-              <span>Sim</span>
-              <input type="radio" name='trade'
-              onChange={(e)=> setTrade(e.target.value)}/>
-              <span>Não</span>
+                <select {...register("category")}>
+                  <option value="teste">--Select--</option>
+                  {categories.map(category => (
+                    <option value={category.id}>{category.name}</option>
+
+                  ))}
+
+                </select>
+                <p>{errors.category?.message}</p>
               </div>
 
-              <div>
-              <label>Ano</label>
-              <input type="number" onChange={(e)=> setYear(e.target.value)} placeholder='digite aqui o ano' />
-              
-              </div>
-              <div>
-              <label>Kilometros rodados</label>
-              <input type="number" onChange={(e)=> setKm(e.target.value)} placeholder='digite aqui os KM'/>
-              
-              </div>
-              
             </div>
             <input type="submit" />
           </form>
 
-        <div>
-          <label htmlFor="image">Envie aqui uma imagem do carro</label>
-          <input type="file" name="image" accept="image/png, image/jpeg" 
-          id='image' onChange={fileChangedHandler}/>
-          {imagePreview}
-        </div>
-      
-        
+          <div>
+            <label className={fileErrorMessage !== '' ? 'hidden' : ''}>Agora escolha as imagens a serem exibidas</label>
+            <label className="labelError">{fileErrorMessage}</label>
+            <section className="container">
+              <div id="baseStyle" {...getRootProps({ className: "dropzone", style })}>
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <p>Solte os arquivos aqui.</p>
+                ) : (
+                  <p>Jogue os arquivos aqui ou clique para escolher</p>
+                ) || files.length > 0 ? <p>Clique ou jogue para mudars as imagens</p> : <p>Jogue os arquivos aqui ou clique para escolher</p>}
+              </div>
+              <aside className="aside">{thumbs}</aside>
+            </section>
+          </div>
         </ProductSection>
-
-        </Content>
-      
-
+      </Content>
     </Container>
   );
-};
+}
 
-export default SalesPage;
-
+export default SalesPage

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Container, Content, ProductSection } from './styles';
 
@@ -8,66 +8,114 @@ import { MdCategory } from 'react-icons/md';
 import { GiTrade } from "react-icons/gi";
 import { RiPinDistanceFill } from "react-icons/ri";
 import { IoColorPaletteSharp } from "react-icons/io5";
+import { api } from '../../services/api';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../store';
 
-
-
+interface category {
+  id: string
+  name: string
+  description: string
+}
+interface image {
+  image_name: string
+}
+interface Car {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  license_plate: string;
+  brand: string;
+  category_id: string;
+  category: string;
+  images: image[];
+}
 const ProductPage = (): JSX.Element => {
 
+  const { carId } = useSelector(
+    (state: ApplicationState) => state.ids
+  );
+  const [isOpen, setIsOpen] = useState(false)
+  const [car, setCar] = useState({} as Car)
+  const [idx, setIdx] = useState(0)
 
-  const [isOpen, setIsOpen] =useState(false)
+
+  useEffect(() => {
+    async function loadCar() {
+      const { data: car } = await api.get(`/cars/available?id${carId}`)
+
+      const { data: categories } = await api.get<category[]>(`/categories`)
+      const { data: images } = await api.get(`/cars/images?car_id=${car.id}`)
+      const category = categories.find((category) => category.id === car.category_id)
+
+      const carsFormatted = {
+        ...car,
+        price: new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(car.price),
+        image: images,
+        category: category?.name
+      };
 
 
-   function handleOpenContactModal(){
+      setCar(carsFormatted)
+    }
+
+    loadCar()
+
+  }, [])
+
+  function handleOpenContactModal() {
     setIsOpen(true)
   }
-  function handleCloseContactModal(){
+  function handleCloseContactModal() {
     setIsOpen(false)
   }
 
   return (
     <Container>
       <Content>
-      <h1>Carro Tal</h1>
-      <ProductSection>
+        <h1>Carro Tal</h1>
+        <ProductSection>
           <section>
             <div>
               <AiFillCar />
-              <label>Linha:</label><span>Linha Tal</span>
-              </div>
-              <div>
+              <label>Linha:</label><span>{car.name}</span>
+            </div>
+            <div>
               <MdCategory />
-              <label>Categoria:</label><span>Sedan</span>
-              </div>
-              <div>
+              <label>Categoria:</label><span>{car.category}</span>
+            </div>
+            <div>
               <AiFillCalendar />
-              <label>Ano:</label> <span>2020</span>
-              </div>
-              <div>
+              <label>Marca:</label> <span>{car.brand}</span>
+            </div>
+            <div>
               <GiTrade />
-              <label>Aceita Troca: </label><span>Sim</span>
-              </div>
-              <div>
+              <label>Descrição: </label><span>{car.description}</span>
+            </div>
+            <div>
               <RiPinDistanceFill />
-              <label>KM: </label><span>83.312</span>
-              </div>
-              <div>
-              <IoColorPaletteSharp />
-              <label>Cor: </label> <span>Branco</span>
-              </div>
+              <label>Placa: </label><span>{car.license_plate}</span>
+            </div>
+            <div>
+            </div>
             <button type='button' onClick={handleOpenContactModal}>Contatar Anunciante</button>
           </section>
-          
-      
-        <section>
 
-          <img src='https://www.imagensempng.com.br/wp-content/uploads/2021/06/02-21.png' alt="" />
 
-        </section>
+          <section>
+            <button onClick={() => setIdx(idx - 1)}>{"<-"}</button>
+            <img src={car.images[idx].image_name} alt="" />
+            <button onClick={() => setIdx(idx + 1)}>{"->"}</button>
+          </section>
         </ProductSection>
 
-        </Content>
-      <ContactModal isOpen={isOpen} onRequestClose={handleCloseContactModal}/>
-      
+      </Content>
+      <ContactModal isOpen={isOpen} onRequestClose={handleCloseContactModal} />
+
 
     </Container>
   );

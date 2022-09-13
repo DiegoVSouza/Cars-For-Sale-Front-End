@@ -5,6 +5,9 @@ import { darken } from 'polished';
 export const Container = styled.footer`
     background: ${darken(0.9, '#151418')};
     color: var(--white);
+    position: absolute;
+    bottom: -10rem;
+    width: 100%;
 
     div{
         max-width: 1120px;
@@ -13,9 +16,13 @@ export const Container = styled.footer`
         justify-content: center;
         margin: auto;
         justify-content: space-evenly;
+        p{
+            margin: 0 0.5rem;
+        }
         section{
             display: flex;
             justify-content: space-evenly;
+            align-items: center;
             svg{
                 fill: var(--white);
                 width: 32px;

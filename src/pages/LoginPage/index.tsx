@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useLogin } from '../../hooks/useLogin';
+import { useEffect, useState } from 'react';
 import LogoImg from '../../assets/images/logo.svg'
 import BtnGoogleImg from '../../assets/images/BTNGoogle.svg'
 import BtnFacebookImg from '../../assets/images/BTNFacebook.svg'
@@ -8,107 +7,112 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 
 import { Card, Container, Form, LinkAccounts } from './styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-import { useForm, SubmitHandler  } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Account } from '../../types';
 import { api } from '../../services/api';
+import { ApplicationState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadSession, loadSessionFailure } from '../../store/ducks/tokens/actions';
+import { loadRequest } from '../../store/ducks/cars/actions';
 
 type Inputs = {
     email: string,
     password: string,
-  };
+};
 
-  const schema = yup.object({
+const schema = yup.object({
     email: yup.string().email('Informe um email valido').required('Informe um email valido'),
-    password: yup.string().min(8,'a senha deve conter 8 caracteres').required('a'),
+    password: yup.string().min(3, 'a senha deve conter 8 caracteres').required('a'),
 }).required();
 
 
-const LoginPage = (): JSX.Element=>{
+const LoginPage = (): JSX.Element => {
+    const { error, data: user } = useSelector((state: ApplicationState) => state.tokens);
+    const [handleError, setHandleError] = useState(false)
+    const dispactch = useDispatch();
+    const history = useNavigate();
+    useEffect(() => {
+        console.log(user)
 
-    const  [errorFild, setErrorFild] = useState(()=>{
+        if (user.logged) {
+            history('/')
+            seFtormStylePassword({ border: 'solid 0.5px gray' })
+            setFormStyleEmail({ border: 'solid 0.5px gray' })
+
+        } else {
+            seFtormStylePassword({ border: 'solid 0.5px red' })
+            setFormStyleEmail({ border: 'solid 0.5px red' })
+            setErrorFild(<p>Endereço de email não encontrado</p>)
+            setErrorFild(<p>Senha incorreta</p>)
+
+        }
+    }, [error, user])
+    const [errorFild, setErrorFild] = useState(() => {
         return <></>
     })
-
-    const {LoginAccount} = useLogin() 
-
-    const { register, handleSubmit, formState: { errors }, } = useForm<Inputs>({
-        resolver: yupResolver(schema)
-      });
-
-    const onSubmit: SubmitHandler<Inputs> = async data => {
-
-        const {data: accounts} = await api.get<Account[]>('/accounts')
-        const currentEmail = accounts.find(account=> account.email === data.email)
-        
-        if(currentEmail){
-            const currentId = currentEmail.id
-            setFormStyleEmail({border: 'solid 0.5px gray'})
-
-            if(currentEmail.password === data.password){
-                seFtormStylePassword({border: 'solid 0.5px gray'})
-                LoginAccount(currentId)
-                return
-
-            }else{
-                seFtormStylePassword({border: 'solid 0.5px red'})
-                setErrorFild(<p>Senha incorreta</p>)
-                return
-            }
-            
-        }else{
-            setFormStyleEmail({border: 'solid 0.5px red'})
-            setErrorFild(<p>Endereço de email não encontrado</p>)
-            return
-        }
-      };
-
-      const [formStyleEmail, setFormStyleEmail] = useState(()=>{
-          return(
+    const [formStyleEmail, setFormStyleEmail] = useState(() => {
+        return (
             {
                 border: 'solid 0.5px gray'
             }
-          )
-      })
-
-      const [formStylePassword, seFtormStylePassword] = useState(()=>{
-        return(
-          {
-              border: 'solid 0.5px gray'
-          }
+        )
+    })
+    const [formStylePassword, seFtormStylePassword] = useState(() => {
+        return (
+            {
+                border: 'solid 0.5px gray'
+            }
         )
     })
 
 
-           
+    const { register, handleSubmit, formState: { errors }, } = useForm<Inputs>({
+        resolver: yupResolver(schema)
+    });
+
+
+    const onSubmit: SubmitHandler<Inputs> = async data => {
+        dispactch(loadSession(data))
+    };
+
     const [showPassword, setShowPassword] = useState('password')
 
     const [visible, setVisible] = useState(true)
 
-    function visibleIcon(){
-        if(visible){
-            return <AiOutlineEye size={24} color='#000000'/>
-            
-        }else{
-            return <AiOutlineEyeInvisible size={24} color='#000000'/>
-        }        
+    function visibleIcon() {
+        if (visible) {
+            return <AiOutlineEye size={24} color='#000000' />
+
+        } else {
+            return <AiOutlineEyeInvisible size={24} color='#000000' />
+        }
     }
 
-    function showPassord(){
-        if(showPassword === 'password'){
+    function showPassord() {
+        if (showPassword === 'password') {
             setShowPassword('text')
             setVisible(false)
-        }else{
+        } else {
             setShowPassword('password')
             setVisible(true)
         }
     }
 
-    return(
+    function setDefaultEmail() {
+        setErrorFild(<></>)
+        setFormStyleEmail({ border: 'solid 0.5px gray' })
+    }
+
+    function setDefaultPassword() {
+        setErrorFild(<></>)
+        seFtormStylePassword({ border: 'solid 0.5px gray' })
+    }
+    return (
         <Container>
             <Card>
                 <Form>
@@ -123,19 +127,21 @@ const LoginPage = (): JSX.Element=>{
                             style={formStyleEmail}
                             id="email"
                             {...register("email")}
+                            onChange={setDefaultEmail}
                         />
                         <p>{errors.email?.message}</p>
-                        
+
                         <label>Senha</label>
                         <div>
                             <div onClick={showPassord}>
-                                {visibleIcon()} 
+                                {visibleIcon()}
                             </div>
                             <input
                                 style={formStylePassword}
                                 type={showPassword}
-                                    {...register("password")}
-                                />
+                                {...register("password")}
+                                onChange={setDefaultPassword}
+                            />
                         </div>
                         <p>{errors.password?.message}</p>
 
@@ -143,19 +149,19 @@ const LoginPage = (): JSX.Element=>{
                         <input type="submit" value="Entrar" />
                     </form>
                 </Form>
-                <LinkAccounts>
+                {/* <LinkAccounts>
                     <div>
-                        <hr/>
+                        <hr />
                         <label> Ou entre </label>
-                        <hr/>
+                        <hr />
                     </div>
                     <section>
                         <Link to={'/'}><img src={BtnGoogleImg} alt="" /></Link>
                         <Link to={'/'}><img src={BtnFacebookImg} alt="" /></Link>
                     </section>
-                    
-                    <footer><span>Não é registrado?</span> <Link to={'createaccount'}>Crie uma conta</Link></footer>
-                </LinkAccounts>
+
+                    <footer><span>Não é registrado?</span> <Link to='/createaccount'>Crie uma conta</Link></footer>
+                </LinkAccounts> */}
             </Card>
         </Container>
     )

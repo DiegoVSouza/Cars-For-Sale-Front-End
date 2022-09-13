@@ -1,32 +1,38 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { Provider, useSelector } from 'react-redux';
 
-import Routes from './routes';
+import Routes from './routes/routes';
 import GlobalStyles from './styles/global';
 
 import { ModalProvider } from './hooks/useModal';
-import { LoginProvider } from './hooks/useLogin';
 import { ContactModal } from './components/ContactModal';
 import Modal from 'react-modal'
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { PersistGate } from 'redux-persist/integration/react';
+import { ApplicationState, persistor, store } from './store'
 
 Modal.setAppElement('#root');
 
 const App = (): JSX.Element => {
-
+  const { loading } = useSelector(
+    (state: ApplicationState) => state.cars
+  );
+  const path = window.location.pathname
 
   return (
     <BrowserRouter>
-    <LoginProvider>
+      <PersistGate loading={loading} persistor={persistor}>
         <ModalProvider>
           <GlobalStyles />
-          <Header/>
+          {path !== '/maissaude/p/createaccount' && path !== '/maissaude/p/login' ? <Header /> : <></>}
           <Routes />
-          <Footer/>
+          <Footer />
         </ModalProvider>
-      </LoginProvider>
+      </PersistGate>
+
     </BrowserRouter>
   );
 };

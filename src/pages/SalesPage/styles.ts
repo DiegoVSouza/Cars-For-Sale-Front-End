@@ -1,28 +1,71 @@
-import styled from 'styled-components';
-import { darken } from 'polished';
+import styled from "styled-components";
+import { darken } from "polished";
 export const Container = styled.main`
-
-`
+  .thumb {
+    display: inline-flex;
+    border-radius: 5px;
+    margin: 2rem;
+    width: 30%;
+    height: 5rem;
+    box-sizing: border-box;
+    display: flex;
+    h2{
+      align-self: center;
+      justify-self: center;
+      margin-left: 1rem;
+    }
+  }
+  .aside {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 16;
+  }
+  #baseStyle{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-width: 2;
+    border-radius: 2;
+    border-color: #eeeeee;
+    border-style: dashed;
+    background-color: #fafafa;
+    color: #bdbdbd;
+    outline: none;
+    transition: all .24s ease-in-out;
+    cursor: pointer;
+  }
+  .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-box-shadow: 5px 4px 15px 5px rgba(0,0,0,0.18); 
+box-shadow: 5px 4px 15px 5px rgba(0,0,0,0.18);
+  }
+`;
 
 export const Content = styled.article`
   max-width: 1120px;
   margin: auto;
   padding: 4rem 2rem;
   color: var(--black);
-  
-  h1{
+
+  h1 {
     position: relative;
     height: 5rem;
 
-    &::after{
-      content: '';
-            height: 4px;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            border-radius: 5px 5px 0 0 ;
-            background: var(--blue);
-            width: 60%;
+    &::after {
+      content: "";
+      height: 4px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-radius: 5px 5px 0 0;
+      background: var(--blue);
+      width: 60%;
     }
     font-size: 4rem;
     @media (max-width: 1080px) {
@@ -31,10 +74,8 @@ export const Content = styled.article`
     @media (max-width: 720px) {
       font-size: 3rem;
     }
-    
   }
-
-`
+`;
 
 export const ProductSection = styled.section`
   display: flex;
@@ -44,10 +85,9 @@ export const ProductSection = styled.section`
   background: var(--white);
   border: solid 2px var(--gray);
   border-radius: 10px;
-  padding: 1rem 2rem;
+  padding: 3rem 2rem;
 
-
-  >div{
+  > div {
     position: relative;
     display: flex;
     align-items: center;
@@ -55,107 +95,124 @@ export const ProductSection = styled.section`
     width: 50%;
     height: auto;
 
-    .picture{
-      img{
+    .picture {
+      img {
         width: 100%;
-        height: auto; 
+        height: auto;
       }
     }
     input[type="file"] {
-    display: none;
+      display: none;
     }
-    label{
+    label {
       font-size: 1rem;
       position: absolute;
-      bottom: 0.5rem;
+      font-weight: bold;
+      top: 0.5rem;
       padding: 1rem;
-      background: var(--blue);
-      color: var(--white);
       border-radius: 10px;
-      cursor: pointer;
-    }
-    img{
-    max-width: 100%;
-    height: auto;    
-    }
-    }
-
-    form{
-      width: 50%;
-      display:flex;
-      flex-direction: column;
-      input{
-        width: 90%;
-        border-radius: 8px;
-        border-style: none;
-        padding: 0.5rem 1rem;
-        transition: all 200ms;
-        border: solid 0.5px gray;
+      &.hidden{
+        display: none;
       }
-      label{
-        font-size: 1rem;
-        margin-bottom: 0.25rem;
-        & + input{
-          margin-bottom: 0.5rem;
+      &.labelError{
+        top: 1rem;
+        color: red;
+      }
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    input {
+      width: 90%;
+      border-radius: 8px;
+      border-style: none;
+      padding: 0.5rem 1rem;
+      transition: all 200ms;
+      border: solid 0.5px gray;
+    }
+    p {
+      color: red;
+      margin: 0.5rem 0;
+    }
+    label {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+      & + input {
+      }
+    }
+
+    > div {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      div {
+        margin: 0.5rem 0;
+        label {
+          font-size: 0.75rem;
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+        input {
+          width: 80%;
+        }
+        select {
+          border-radius: 5px;
+          width: 8rem;
+          border: 1px solid var(--gray-medium);
+          height: 1.5rem;
+        }
+      }
+
+      .ratiodiv {
+        height: 2rem;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-bottom: 4rem;
+
+        span {
+          line-height: 2rem;
+          font-size: 1rem;
+          padding: 0 1rem 0 0.5rem;
+          
         }
 
-      } 
-
-      >div{
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-        div{
-          margin: 0.5rem 0 ;
-          label{
-            font-size: 0.75rem;
-            display: block;
-            margin-bottom: 0.25rem;
-          }
-          input{
-            width: 80%;
-          
-          }
-          select{
-
-            border-radius: 5px;
-            width: 5rem;
-            border: 1px solid var(--gray-medium);
-          }
-          
+        label{
+          transform: translateY(20%);
+          margin-right: 1rem;
+          cursor: pointer;
         }
-        
-        .ratiodiv{
-          height: 2rem;
-          span{
-            line-height: 2rem;
-            font-size: 1rem;
-            padding: 0 1rem 0 0.5rem;
 
+        input + label {
+          position: relative;
+        }
+
+        input {
+          cursor: pointer;
+          width: auto;
+          position: relative;
+          width: 16px;
+          height: 16px;
+
+          &:checked + label::after {
+            content: "";
+            background-color: var(--blue);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: absolute;
+            left: -14px;
+            top: 1px;
           }
-
-          input + span {
-            position: relative;
-            
-          } 
-
-          input{
-            cursor: pointer;
-            width: auto;
-            position: relative;
-            width: 16px;
-            height: 16px;
-            &:checked + span::after {
-              content: '';
-              background-color: var(--blue);
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              position: absolute;
-              left: -14px;
-              bottom: 6px;       
-          }
-          &:checked + label::before {
-            content: '';
+          &:checked + span::before {
+            content: "";
             position: absolute;
             left: 0;
             bottom: 0;
@@ -167,12 +224,12 @@ export const ProductSection = styled.section`
           }
         }
       }
-    }  
+    }
   }
-  
 
-  input[type=submit]{
+  input[type="submit"] {
     background: var(--blue);
+    position: absolute;
     font-size: 1rem;
     color: var(--white);
     padding: 0.75rem;
@@ -180,16 +237,12 @@ export const ProductSection = styled.section`
     border-style: none;
     border-radius: 10px;
     width: 90%;
+    left: 50%;
+    bottom: -5%;
 
-                    a{
-                        color: var(--white);
-                        text-decoration: none;  
-                    }
+    a {
+      color: var(--white);
+      text-decoration: none;
+    }
   }
-
-  
-`
-
-
-
-
+`;

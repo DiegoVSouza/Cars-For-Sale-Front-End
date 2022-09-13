@@ -78,15 +78,15 @@
   ],
   "mycars": [
     {
-      "id": 1465473832345,
-      "name": "dasjdklaw",
-      "collection": "dawsdwa",
-      "price": 12312,
-      "category": "SUV",
-      "trade": "on",
-      "km": "213123",
-      "year": "12312",
-      "file": {}
+      "name": "dasdsa",
+      "specifications": "21312312",
+      "price": 12312312,
+      "category": "Sedan",
+      "trade": true,
+      "km": 12312312,
+      "year": 3123123,
+      "file": "",
+      "id": 1
     }
   ]
 }

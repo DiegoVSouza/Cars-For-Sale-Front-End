@@ -1,25 +1,22 @@
-import styled from 'styled-components';
-import { darken } from 'polished';
+import styled from "styled-components";
+import { darken } from "polished";
 export const Container = styled.main`
-  
-  
-`
+
+`;
 
 export const Content = styled.section`
-max-width: 1120px;
+  max-width: 1120px;
   margin: auto;
   padding: 4rem 2rem;
   color: var(--white);
   display: flex;
   justify-content: space-between;
 
-  
-
-  label{
+  label {
     font-size: 1.25rem;
   }
 
-  h2{
+  h2 {
     font-size: 2.5rem;
     margin-top: 2rem;
     line-height: 1rem;
@@ -30,7 +27,7 @@ max-width: 1120px;
       font-size: 1.25rem;
     }
   }
-  h1{
+  h1 {
     font-size: 3rem;
     @media (max-width: 1080px) {
       font-size: 2.5rem;
@@ -38,20 +35,20 @@ max-width: 1120px;
     @media (max-width: 720px) {
       font-size: 2rem;
     }
-    span{
+    span {
       color: var(--blue);
       font-size: 4rem;
       font-weight: 900;
       @media (max-width: 1080px) {
-      font-size: 3rem;
-    }
+        font-size: 3rem;
+      }
       @media (max-width: 720px) {
-      font-size: 2rem;
-    }
+        font-size: 2rem;
+      }
     }
   }
 
-  img{
+  img {
     /* width: 30rem; */
     max-width: 45%;
     height: auto;
@@ -59,20 +56,15 @@ max-width: 1120px;
     @media (max-width: 720px) {
       display: none;
     }
-    
   }
-  svg{
-      max-width: 10%;
-      height: auto;
-      fill: var(--white);
-      margin-top: 2rem;
+  svg {
+    max-width: 10%;
+    height: auto;
+    fill: var(--white);
+    margin-top: 2rem;
 
-      & + svg{
-        margin-left: 1rem;
-      }
+    & + svg {
+      margin-left: 1rem;
     }
-`
-
-
-
-
+  }
+`;

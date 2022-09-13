@@ -13,16 +13,25 @@ export const Content = styled.section`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  button{
+    &.add{
+      position: absolute;
+      width: 25%;
+      top: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      font-weight: bold;
+      height: 60%;
 
-  div{
-    display: flex;
-    flex-direction: column;
-    justify-self: center;
-    align-self: center;
-    text-align: center;
-    padding: 10rem 0;
-    button{
-                    background: var(--blue);
+      svg{
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.5rem;
+      }
+    }
+    background: var(--blue);
                     font-size: 1rem;
                     color: var(--white);
                     padding: 0.75rem;
@@ -31,12 +40,10 @@ export const Content = styled.section`
                     border-radius: 10px;
                     width: 100%;
                     align-self: center;
+  }
 
-                    a{
-                        color: var(--white);
-                        text-decoration: none;  
-                    }
-                }
+  div{
+    position: relative
 
 
   }
@@ -46,6 +53,7 @@ export const Content = styled.section`
         position: relative;
         height: 5rem;        
         font-size: 3rem;
+        position: relative;
         &::after{
             content: '';
             height: 4px;
@@ -127,6 +135,7 @@ export const Cars = styled.ul`
             grid-auto-rows: 1fr;
             column-gap: 1rem;
             
+            cursor: pointer;
             
             list-style: none;
             
@@ -146,7 +155,7 @@ export const Cars = styled.ul`
                 &:hover{
                     box-shadow: 0 10px 10px 1px ${darken(0.1, '#474747')};
                 }
-                
+
                 img{
                     max-width: 20rem;
                     height: auto;
@@ -178,12 +187,18 @@ export const Cars = styled.ul`
                 }
 
                 svg{
-                  width: 16px;
-                  height: 16px;
+                  cursor: pointer;
+                  width: 32px;
+                  height: 32px;
                   position: absolute;
                   right: 1rem;
                   top: 1rem;
                   color: var(--white);
+                  border-radius: 5px;
+                  padding: 0.5rem;
+                  &:hover{
+                    background: red;
+                  }
                 }
 
                 
