@@ -38,12 +38,15 @@ const MyCars = (): JSX.Element => {
   const goToSalesPage = () => {
     history("/salespage");
   };
+  const goToCategoryPage = () => {
+    history("/salespage");
+  };
   async function loadProducts() {
     const { data: cars } = await api.get(`/cars/available?user_id=${user.user.id}`);
     const { data: categories } = await api.get<category[]>(`/categories`)
     const { data: images } = await api.get<image[]>(`/cars/images`)
 
-    const carsFormatted = await cars.map( (car: Car) => {
+    const carsFormatted = await cars.map((car: Car) => {
       const category = categories.find((category) => category.id === car.category_id)
       const image = images.filter((image) => image.car_id === car.id)
       return {
@@ -94,6 +97,10 @@ const MyCars = (): JSX.Element => {
         <Content>
           <div>
             <h1>MyCars</h1>
+            <button className="add" onClick={goToSalesPage}>
+              <AiOutlinePlus />
+              Categoria
+            </button>
             {myCars.length > 0 ? <button className="add" onClick={goToSalesPage}>
               <AiOutlinePlus />
               Carro

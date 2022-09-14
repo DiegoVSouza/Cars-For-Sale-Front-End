@@ -122,7 +122,7 @@ const SalesPage = (): JSX.Element => {
       formData.append("images", file)
 
     })
-    console.log(formData)
+
     await api.post("/cars", car, {
       headers: {
         'authorization': `Basic ${user.refresh_token}`

@@ -2,7 +2,12 @@ import { Reducer } from 'redux';
 import { TokenData, TokenState, TokensTypes, User } from './types';
 
 const INITIAL_STATE: TokenState = {
-  data: {} as TokenData,
+  data: {
+    user: {} as User,
+    token: "",
+    refresh_token: "",
+    logged: false
+  },
   error: false,
   loading: true,
 };
