@@ -26,10 +26,13 @@
 
 
 ## Detalhes
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **tecnologias**/ | ReactJS, JavaScript, Styled-components, Firebase |
-| **api's**/    | Propria                                    |
-| **inspiração**/        | Marketplace do FaceBook                         |
+
+|   |  |
+| ------------- | ------------- |
+| **tecnologias**  | ReactJS, JavaScript, Styled-components, Firebase  |
+| **api's**  | Propria  |
+| **inspiração**/ | Marketplace do FaceBook |
+
 
 
 ## Contribuições
