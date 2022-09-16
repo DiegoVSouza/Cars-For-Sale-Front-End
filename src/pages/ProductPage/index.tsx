@@ -38,19 +38,17 @@ const ProductPage = (): JSX.Element => {
   );
   const [isOpen, setIsOpen] = useState(false)
   const [car, setCar] = useState({} as Car)
-  const [idx, setIdx] = useState(0)
 
 
   useEffect(() => {
     async function loadCar() {
-      const { data: car } = await api.get(`/cars/available?id${carId}`)
-
+      const { data: car } = await api.get(`/cars/available?id=${carId}`)
       const { data: categories } = await api.get<category[]>(`/categories`)
-      const { data: images } = await api.get(`/cars/images?car_id=${car.id}`)
-      const category = categories.find((category) => category.id === car.category_id)
+      const { data: images } = await api.get(`/cars/images?car_id=${car[0].id}`)
+      const category = categories.find((category) => category.id === car[0].category_id)
 
       const carsFormatted = {
-        ...car,
+        ...car[0],
         price: new Intl.NumberFormat("pt-BR", {
           style: "currency",
           currency: "BRL",
@@ -65,7 +63,7 @@ const ProductPage = (): JSX.Element => {
 
     loadCar()
 
-  }, [])
+  }, [carId])
 
   function handleOpenContactModal() {
     setIsOpen(true)

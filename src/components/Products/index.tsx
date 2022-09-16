@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
+import { ApplicationState } from "../../store";
 import { updateCar } from "../../store/ducks/ids/actions";
 import { formatPrice } from "../../util/formats/formatPrice";
 import { Card, Cars, Container } from "./styles";
@@ -39,11 +40,14 @@ interface category {
 const Product: React.FC<productProps> = ({ category_id }) => {
   const dispactch = useDispatch();
   const history = useNavigate()
+  const { carId } = useSelector(
+    (state: ApplicationState) => state.ids
+  );
   const [cars, setCars] = useState<CarsFormatted[]>([])
   const [category, setCategory] = useState<category>({
     id: "",
-  name: "teste",
-  description: ""
+    name: "teste",
+    description: ""
   })
   useEffect(() => {
     async function loadProducts() {
@@ -51,9 +55,9 @@ const Product: React.FC<productProps> = ({ category_id }) => {
       const { data: categories } = await api.get<category[]>(`/categories`)
       const category = categories.find((category) => category.id === category_id)
       setCategory(category as category)
-      
+
       const carsFormatted = cars.map(function (car: Car) {
-      const category = categories.find((category) => category.id === car.category_id)
+        const category = categories.find((category) => category.id === car.category_id)
 
         return {
           ...car, price: new Intl.NumberFormat('pt-BR', {
@@ -69,11 +73,12 @@ const Product: React.FC<productProps> = ({ category_id }) => {
     loadProducts();
   }, []);
 
-  const name = category.name[0].toUpperCase() + category.name.substring(1);;
+  const name = category.name[0].toUpperCase() + category.name.substring(1);
   const goToProductPage = (carId: string) => {
     dispactch(updateCar(carId))
     history('/productpage')
   }
+
   return (
     <Container>
       <Card>

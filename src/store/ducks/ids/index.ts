@@ -12,7 +12,7 @@ const reducer: Reducer<idsState> = (state = INITIAL_STATE, action) => {
 
     case idsTypes.UPDATECAR:
       return {
-        ...state, loading: false, error: false, clinicId: action.payload.id
+        ...state, loading: false, error: false, carId: action.payload.id
       };
 
     default:
