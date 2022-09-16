@@ -27,7 +27,7 @@ type Inputs = {
 
 const schema = yup.object({
   name: yup.string().required('Informe o nome da categoria'),
-  description: yup.number().typeError('Por favor informe a descrição').required('Por favor informe a descrição'),
+  description: yup.string().required('Por favor informe a descrição'),
 }).required();
 
 export const CategoryModal = ({
@@ -62,20 +62,17 @@ export const CategoryModal = ({
           <label>Nome</label>
           <input
             type='text'
-            defaultValue={user.user.name}
             {...register("name")}
           />
           <p>{errors.name?.message}</p>
           <label>Descrição</label>
           <input
             type='text'
-            defaultValue={user.user.name}
             {...register("description")}
           />
           <p>{errors.description?.message}</p>
 
-
-
+          <input type="submit" value="Adicionar Categoria" />
         </form>
       </Container>
     </Modal>

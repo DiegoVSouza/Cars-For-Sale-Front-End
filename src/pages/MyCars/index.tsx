@@ -7,6 +7,7 @@ import { FiTrash } from "react-icons/fi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ApplicationState } from "../../store";
 import { useSelector } from "react-redux";
+import { CategoryModal } from "../../components/CategoryModal";
 
 interface image {
   path: string
@@ -31,6 +32,7 @@ interface Car {
 
 const MyCars = (): JSX.Element => {
   const [myCars, setMyCars] = useState<Car[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { data: user } = useSelector((state: ApplicationState) => state.tokens);
 
   const history = useNavigate();
@@ -67,6 +69,14 @@ const MyCars = (): JSX.Element => {
     loadProducts();
   }, []);
 
+  const handleOpenModal = () => {
+    setIsOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpen(false)
+  }
+
   function Empty() {
     if (myCars.length === 0) {
       return (
@@ -97,14 +107,14 @@ const MyCars = (): JSX.Element => {
         <Content>
           <div>
             <h1>MyCars</h1>
-            <button className="add" onClick={goToSalesPage}>
+            <button className="add category" onClick={handleOpenModal}>
               <AiOutlinePlus />
               Categoria
             </button>
-            {myCars.length > 0 ? <button className="add" onClick={goToSalesPage}>
+            <button className="add" onClick={goToSalesPage}>
               <AiOutlinePlus />
               Carro
-            </button> : <></>}
+            </button>
           </div>
 
           <Cars>
@@ -122,6 +132,7 @@ const MyCars = (): JSX.Element => {
           </Cars>
           {Empty()}
         </Content>
+        <CategoryModal isOpen={isOpen} onRequestClose={handleCloseModal} />
       </Container>
     );
   } else {

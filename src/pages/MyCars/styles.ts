@@ -14,6 +14,7 @@ export const Content = styled.section`
   justify-content: space-between;
   flex-direction: column;
   button{
+
     &.add{
       position: absolute;
       width: 25%;
@@ -30,6 +31,9 @@ export const Content = styled.section`
         height: 2rem;
         margin-right: 0.5rem;
       }
+    }
+    &.category{
+      right: 28%;
     }
     background: var(--blue);
                     font-size: 1rem;
