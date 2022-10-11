@@ -10,6 +10,7 @@ import Dropzone, { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ApplicationState } from "../../store";
+import axios, { AxiosRequestConfig } from "axios";
 
 interface ICar {
   id: number;
@@ -58,6 +59,7 @@ const SalesPage = (): JSX.Element => {
 
   const [file, setFile] = useState<File | string>("");
   const [files, setFiles] = useState([] as any);
+  const [filesPreview, setFilesPreview] = useState([] as any);
   const [categories, setCategories] = useState([] as categories[]);
 
   const [fileErrorMessage, setFileErrorMessage] = useState('');
@@ -106,6 +108,7 @@ const SalesPage = (): JSX.Element => {
       return
     }
 
+
     setFileErrorMessage('')
     const car = {
       name: data.name,
@@ -118,10 +121,24 @@ const SalesPage = (): JSX.Element => {
 
 
     const formData = new FormData()
-    files.map((file: any) => {
-      formData.append("images", file)
+    console.log(files[0])
+    formData.append(files[0].name, files[0]);
+    formData.append('key', "02f21c0ffc3a600d89d4f8dc35dcc6b9");
 
-    })
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' },
+    } as AxiosRequestConfig;
+
+    const response = await api.post(
+      'https://api.imgbb.com/1/upload',
+      formData,
+      config
+    );
+
+    console.log(response)
 
     await api.post("/cars", car, {
       headers: {
@@ -174,12 +191,15 @@ const SalesPage = (): JSX.Element => {
     accept: { 'image/*': ['.jpeg', '.jpg', '.png'] },
     onDrop: (acceptedFiles: any) => {
       console.log("accepted", acceptedFiles);
-      setFiles(
+      setFilesPreview(
         acceptedFiles.map((file: any) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file)
           })
         )
+      )
+      setFiles(
+        acceptedFiles
       );
     }
   });
@@ -193,7 +213,7 @@ const SalesPage = (): JSX.Element => {
     [isDragActive, isDragReject, isDragAccept]
   );
 
-  const thumbs = files.map((file: any, index: any) => {
+  const thumbs = filesPreview.map((file: any, index: any) => {
     return (
       <div className="thumb" style={{
         position: "absolute",
@@ -290,7 +310,7 @@ const SalesPage = (): JSX.Element => {
                   <p>Solte os arquivos aqui.</p>
                 ) : (
                   <p>Jogue os arquivos aqui ou clique para escolher</p>
-                ) || files.length > 0 ? <p>Clique ou jogue para mudars as imagens</p> : <p>Jogue os arquivos aqui ou clique para escolher</p>}
+                ) || files.length > 0 ? <p>Clique ou jogue para adicionar imagens</p> : <p>Jogue os arquivos aqui ou clique para escolher</p>}
               </div>
               <aside className="aside">{thumbs}</aside>
             </section>

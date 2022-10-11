@@ -15,6 +15,13 @@ export const Container = styled.main`
       margin-left: 1rem;
     }
   }
+
+  .imagesContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
   .aside {
     display: flex;
     flex-direction: row;
